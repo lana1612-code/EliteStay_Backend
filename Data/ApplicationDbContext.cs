@@ -23,5 +23,14 @@ namespace Hotel_Backend_API.Data
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<UserNotification> UserNotifications { get; set; }
 
+        public DbSet<SavedRoom> SavedRooms { get; set; }
+
+        public DbSet<Like> Likes { get; set; }
+
+        public DbSet<Comment> Comments { get; set; }
+
+        public DbSet<Complaint> Complaints { get; set; }
+
+        public DbSet<AdminHotel> AdminHotels { get; set; }
     }
 }

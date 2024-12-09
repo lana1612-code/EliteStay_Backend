@@ -3,6 +3,7 @@ using Hotel_Backend_API.DTO.Booking;
 using Hotel_Backend_API.Models;
 using Hotel_Backend_API.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -11,19 +12,24 @@ namespace Hotel_Backend_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class BookingsController : ControllerBase
     {
         private readonly ApplicationDbContext dbContext;
         private readonly NotificationService notificationService;
+        private readonly UserManager<AppUser> userManager;
 
-        public BookingsController(ApplicationDbContext dbContext, NotificationService notificationService)
+        public BookingsController(ApplicationDbContext dbContext, NotificationService notificationService,
+                                  UserManager<AppUser> userManager)
         {
             this.dbContext = dbContext;
             this.notificationService = notificationService;
+            this.userManager = userManager;
         }
 
 
         [HttpGet("get_All_Bookings")]
+        [Authorize(Roles = "AdminHotel")]
         public async Task<IActionResult> GetAllBookings(int page = 1, int pageSize = 10)
         {
 
@@ -75,6 +81,7 @@ namespace Hotel_Backend_API.Controllers
 
 
         [HttpGet("get_Booking_by_Id/{bookingId}")]
+        [Authorize(Roles = "AdminHotel")]
         public async Task<IActionResult> GetBookingById(int bookingId)
         {
             try
@@ -106,6 +113,7 @@ namespace Hotel_Backend_API.Controllers
 
 
         [HttpGet("get_Booking_by_Hotel_Id/{hotelId}")]
+        [Authorize(Roles = "AdminHotel")]
         public async Task<IActionResult> GetBookingsByHotelId(int hotelId, int page = 1, int pageSize = 10)
         {
             try
@@ -156,6 +164,7 @@ namespace Hotel_Backend_API.Controllers
 
 
         [HttpGet("get_Booking_for_User_By_User_Id/{userId}")]
+        [Authorize(Roles = "AdminHotel,Normal")]
         public async Task<IActionResult> GetBookingsByUserId(int userId, int page = 1, int pageSize = 10)
         {
             try
@@ -202,6 +211,7 @@ namespace Hotel_Backend_API.Controllers
 
 
         [HttpGet("get_Booking_within_date_filtering")]
+        [Authorize(Roles = "AdminHotel")]
         public async Task<IActionResult> GetAllBookings(int page = 1, int pageSize = 10, string startDate = null, string endDate = null)
         {
             try
@@ -249,6 +259,7 @@ namespace Hotel_Backend_API.Controllers
 
 
         [HttpGet("get_Bookings_within_date_filtering_In_Hotel")]
+        [Authorize(Roles = "AdminHotel")]
         public async Task<IActionResult> GetAllBookings(int hotelId, int page = 1, int pageSize = 10, string startDate = null, string endDate = null)
         {
             try
@@ -301,8 +312,8 @@ namespace Hotel_Backend_API.Controllers
 
 
         [HttpPost("Add_Booking")]
-        [Authorize]
-        public async Task<IActionResult> AddBooking([FromBody] AddBookingDTO newBookingDto, [FromQuery] string method)
+        [Authorize(Roles = "Normal")]
+        public async Task<IActionResult> AddBooking([FromBody] AddBookingDTO newBookingDto)
         {
             try
             {
@@ -331,15 +342,19 @@ namespace Hotel_Backend_API.Controllers
                 var email = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
                 var phone = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.MobilePhone)?.Value;
 
+                var serach = await dbContext.Guests
+                 .FirstOrDefaultAsync(b => b.Name == username);
                 var guest = new Guest
                 {
                     Name = email.Split("@")[0] ?? "Unknown",
                     Email = email ?? "Unknown",
                     Phone = phone ?? "Unknown"
                 };
-
-                await dbContext.Guests.AddAsync(guest);
-                await dbContext.SaveChangesAsync();
+                if (serach == null)
+                {
+                    await dbContext.Guests.AddAsync(guest);
+                    await dbContext.SaveChangesAsync();
+                }
 
                 var room = await dbContext.Rooms.FindAsync(newBookingDto.RoomId);
                 if (room == null)
@@ -363,16 +378,8 @@ namespace Hotel_Backend_API.Controllers
                 room.Status = "Occupied";
                 await dbContext.SaveChangesAsync();
 
-                var paymentMethod = method.ToUpper();
-                var Status = "NO";
-                if (paymentMethod == "CASH")
-                {
-                    Status = "NO";
-                }
-                else if (paymentMethod == "CARD")
-                {
-                    Status = "YES";
-                }
+                var method = "Card";
+                var Status = "YES";
 
                 var newPayment = new Payment
                 {
@@ -413,7 +420,7 @@ namespace Hotel_Backend_API.Controllers
 
 
         [HttpPut("Update_Booking/{id}")]
-        [Authorize]
+        [Authorize(Roles = "AdminHotel,Normal")]
         public async Task<IActionResult> UpdateBooking(int id, [FromBody] UpdateBookingDTO updatedBookingDto)
         {
             try
@@ -465,7 +472,7 @@ namespace Hotel_Backend_API.Controllers
 
 
         [HttpDelete("Delete_Booking/{id}")]
-        [Authorize]
+        [Authorize(Roles = "AdminHotel,Normal")]
         public async Task<IActionResult> DeleteBooking(int id)
         {
             try
@@ -497,5 +504,77 @@ namespace Hotel_Backend_API.Controllers
                 return StatusCode(500, "An error occurred while deleting the booking.");
             }
         }
+
+        [HttpPut("CheckBooking")]
+        [Authorize(Roles = "AdminHotel")]
+        public async Task<IActionResult> CheckBooking()
+        {
+
+            var userClaims = User.Claims;
+
+            var userIdClaim = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (userIdClaim == null)
+            {
+                return Unauthorized("User ID not found in token.");
+            }
+
+            var usernameClaim = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName)?.Value;
+            if (usernameClaim == null)
+            {
+                return Unauthorized("Username not found in token.");
+            }
+
+            string userId = userIdClaim;
+            string username = usernameClaim;
+            var adminHotelUser = await dbContext.AdminHotels
+                    .FirstOrDefaultAsync(m => m.userName.ToLower() == username.ToLower());
+
+            if (adminHotelUser == null)
+            {
+                return Unauthorized("Admin hotel user not found or does not have permissions.");
+            }
+
+            var now = DateTime.UtcNow;
+            var endedBookings = await dbContext.Bookings
+                .Where(b => b.CheckoutDate <= now && b.Room.Status == "Occupied" && b.Room.Hotel.Id == adminHotelUser.HotelId)
+                .ToListAsync();
+
+
+            foreach (var booking in endedBookings)
+            {
+                var room = await dbContext.Rooms.FindAsync(booking.RoomId);
+                if (room != null)
+                {
+                    var guest = await dbContext.Guests.FindAsync(booking.GuestId);
+                    if (guest == null)
+                    {
+                        return NotFound("Guest not found");
+                    }
+
+                    var userGuest = await userManager.FindByNameAsync(guest.Name);
+                    if (userGuest == null)
+                    {
+                        return NotFound("Guest user not found in the system");
+                    }
+
+                    room.Status = "Available"; 
+
+                    var notificationMessageAdmin = $"Room {room.RoomNumber} is now available.";
+                    await notificationService.CreateNotificationAsync(userId, notificationMessageAdmin);
+
+                    var notificationMessageGuest = $"Your booking in room {room.RoomNumber} ends today.";
+                    await notificationService.CreateNotificationAsync(userGuest.Id, notificationMessageGuest);
+
+                    dbContext.Bookings.Remove(booking);
+                }
+            }
+
+            await dbContext.SaveChangesAsync();
+
+            return Ok("Room statuses updated and notifications sent.");
+
+        }
+
+
     }
 }

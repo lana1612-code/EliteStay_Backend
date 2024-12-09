@@ -2,6 +2,7 @@
 using Hotel_Backend_API.DTO.Payment;
 using Hotel_Backend_API.Models;
 using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,6 +10,7 @@ namespace Hotel_Backend_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "AdminHotel")]
     public class PaymentsController : ControllerBase
     {
         private readonly ApplicationDbContext dbContext;
@@ -31,8 +33,7 @@ namespace Hotel_Backend_API.Controllers
                                                BookingId = p.BookingId,
                                                Amount = p.Amount,
                                                PaymentDate = p.PaymentDate.ToString("yyyy-MM-dd"),
-                                               Method = p.Method,
-                                               StatusDone = p.StatusDone,
+                                               StatusDone = "Yes",
                                            })
                                            .ToListAsync();
 
@@ -51,6 +52,7 @@ namespace Hotel_Backend_API.Controllers
             return Ok(response);
         }
 
+
         [HttpGet("get_Payment_by_id/{id}")]
         public async Task<IActionResult> GetPaymentById(int id)
         {
@@ -61,8 +63,7 @@ namespace Hotel_Backend_API.Controllers
                                               BookingId = p.BookingId,
                                               Amount = p.Amount,
                                               PaymentDate = p.PaymentDate.ToString("yyyy-MM-dd"),
-                                              Method = p.Method,
-                                              StatusDone = p.StatusDone,
+                                              StatusDone = "Yes",
                                           })
                                           .FirstOrDefaultAsync();
 
@@ -71,6 +72,7 @@ namespace Hotel_Backend_API.Controllers
 
             return Ok(payment);
         }
+
 
         [HttpGet("get_Payments_by_Hotel/{hotelId}")]
         public async Task<IActionResult> GetPaymentsByHotelId(int hotelId, int pageNumber = 1, int pageSize = 10)
@@ -92,8 +94,7 @@ namespace Hotel_Backend_API.Controllers
                     BookingId = p.BookingId,
                     Amount = p.Amount,
                     PaymentDate = p.PaymentDate.ToString("yyyy-MM-dd"),
-                    Method = p.Method,
-                    StatusDone = p.StatusDone,
+                    StatusDone = "Yes",
                 })
                 .ToListAsync();
 
@@ -112,50 +113,6 @@ namespace Hotel_Backend_API.Controllers
             return Ok(response);
         }
 
-        //No need for this function
-        [HttpPost("add_payment")]
-        public async Task<IActionResult> AddPayment([FromBody] PaymentDTO newPaymentDto)
-        {
-            try
-            {
-                if (newPaymentDto == null)
-                    return BadRequest("Payment data is required.");
-
-                if (!DateTime.TryParse(newPaymentDto.PaymentDate, out DateTime checkOutDate))
-                    return BadRequest("Invalid check-in date format. Please use 'yyyy-MM-dd'.");
-
-                if (dbContext.Payments.AsEnumerable()
-                        .Any(h => h.BookingId.Equals(newPaymentDto.BookingId)))
-                {
-                    return BadRequest("The Booking is Already has a Payment.");
-                }
-
-                var newPayment = new Payment
-                {
-                    BookingId = newPaymentDto.BookingId,
-                    Amount = newPaymentDto.Amount,
-                    PaymentDate = checkOutDate,
-                    Method = newPaymentDto.Method,
-                    StatusDone = newPaymentDto.StatusDone,
-                };
-
-                dbContext.Payments.Add(newPayment);
-                await dbContext.SaveChangesAsync();
-                var response = new
-                {
-                    Message = "Add Payment success",
-                    Data = newPaymentDto
-                };
-
-                return CreatedAtAction(nameof(GetPaymentById), new { id = newPayment.Id }, response);
-
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "An error occurred while adding the payment.");
-            }
-        }
-
 
         [HttpPut("update_payment/{id}")]
         public async Task<IActionResult> UpdatePayment(int id, [FromBody] UpdatePaymentDTO updatePaymentDto)
@@ -172,17 +129,10 @@ namespace Hotel_Backend_API.Controllers
                 if (!DateTime.TryParse(updatePaymentDto.PaymentDate, out DateTime checkOutDate))
                     return BadRequest("Invalid check-in date format. Please use 'yyyy-MM-dd'.");
 
-                if (dbContext.Payments.AsEnumerable()
-                        .Any(h => h.BookingId.Equals(updatePaymentDto.BookingId)))
-                {
-                    return BadRequest("The Booking is Already has a Payment.");
-                }
 
-                payment.BookingId = updatePaymentDto.BookingId;
                 payment.Amount = updatePaymentDto.Amount;
-                payment.Method = updatePaymentDto.Method;
                 payment.PaymentDate = checkOutDate;
-                payment.StatusDone= updatePaymentDto.StatusDone;
+                payment.StatusDone = "Yes";
 
                 dbContext.Payments.Update(payment);
                 await dbContext.SaveChangesAsync();
@@ -200,39 +150,6 @@ namespace Hotel_Backend_API.Controllers
                 return StatusCode(500, "An error occurred while updating the payment.");
             }
         }
-
-
-        [HttpPut("update_payment_StatusToYes/{id}")]
-        public async Task<IActionResult> UpdatePaymentStatus(int id)
-        {
-            try
-            {
-               
-
-                var payment = await dbContext.Payments.FindAsync(id);
-                if (payment == null)
-                    return NotFound($"Payment with id [{id}] not found.");
-
-                payment.StatusDone = "YES";
-
-                dbContext.Payments.Update(payment);
-                await dbContext.SaveChangesAsync();
-
-                var data = payment.Adapt<PaymentDTO>();
-                var response = new
-                {
-                    Message = "Update Payment Status success",
-                    Data = data
-                };
-
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "An error occurred while updating the payment.");
-            }
-        }
-
 
 
         [HttpDelete("delete_payment/{id}")]

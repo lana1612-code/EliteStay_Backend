@@ -16,7 +16,6 @@ namespace Hotel_Backend_API.Models
         [Column(TypeName = "decimal(10,2)")]
         public decimal TotalPrice { get; set; }
 
-
         public virtual Guest Guest { get; set; }
         public virtual Room Room { get; set; } // to allow lazy loading 
         public virtual Payment Payment { get; set; }// [ 1 - 1 ] Paymen - Booking

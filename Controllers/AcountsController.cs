@@ -1,8 +1,11 @@
-﻿using Hotel_Backend_API.DTO.Acount;
+﻿using Hotel_Backend_API.Data;
+using Hotel_Backend_API.DTO.Acount;
 using Hotel_Backend_API.Models;
 using Hotel_Backend_API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hotel_Backend_API.Controllers
 {
@@ -13,14 +16,17 @@ namespace Hotel_Backend_API.Controllers
         private readonly UserManager<AppUser> userManager;
         private readonly SignInManager<AppUser> signInManager;
         private readonly AuthService authService;
+        private readonly ApplicationDbContext dbContext;
 
         public AcountsController(UserManager<AppUser> userManager,
                  SignInManager<AppUser> signInManager,
-                 AuthService authService)
+                 AuthService authService,
+                 ApplicationDbContext dbContext)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.authService = authService;
+            this.dbContext = dbContext;
         }
 
         [HttpPost("register")]
@@ -79,25 +85,41 @@ namespace Hotel_Backend_API.Controllers
         }
 
 
-        [HttpPut("AssignRole")]
-        public async Task<IActionResult> AssignRole(string userId, string roleName)
+        [HttpPut("AssignRoleToAdminHotel")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AssignRole(string username,int HotelID)
         {
-            var user = await userManager.FindByIdAsync(userId);
+            var user = await userManager.FindByNameAsync(username);
+
             if (user == null)
             {
                 return NotFound("User not found");
             }
-
-            var result = await userManager.AddToRoleAsync(user, "Normal");
+            if (dbContext.AdminHotels.AsEnumerable()
+              .Any(h => h.userName.Equals(username, StringComparison.OrdinalIgnoreCase)))
+            {
+                return BadRequest("This userName is already Admin for Hotel.");
+            }
+            if (dbContext.AdminHotels.AsEnumerable().Any(h => h.HotelId == HotelID))
+            {
+                return BadRequest("This Hotel is already has Admin.");
+            }
+           
+            var result = await userManager.AddToRoleAsync(user, "AdminHotel");
             if (!result.Succeeded)
             {
                 return BadRequest(result.Errors);
             }
-
+            var adminHotel = new AdminHotel
+            {
+                userName = user.UserName,
+                HotelId = HotelID
+            };
+            await dbContext.AdminHotels.AddAsync(adminHotel);
+            await dbContext.SaveChangesAsync();
             return Ok("Role assigned successfully");
         }
    
-    
     }
 
 

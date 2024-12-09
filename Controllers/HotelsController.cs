@@ -143,6 +143,7 @@ namespace Hotel_Backend_API.Controllers
         }
 
         [HttpPost("Add_New_Hotel")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddHotel(AddHotel newhotel, [FromServices] IValidator<AddHotel> validator)
         {
             try
@@ -187,6 +188,7 @@ namespace Hotel_Backend_API.Controllers
         }
 
         [HttpPut("Update_Hotel")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateHotel(int id,
                                   [FromServices] IValidator<AddHotel> validator,
                                   [FromBody] AddHotel updatehotel)
@@ -243,6 +245,7 @@ namespace Hotel_Backend_API.Controllers
         }
 
         [HttpDelete("Delete_Hotel")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteHotel(int id)
         {
             try
@@ -265,7 +268,6 @@ namespace Hotel_Backend_API.Controllers
         }
 
         // [Authorize(Roles = "Admin,Normal")]
-        // [Authorize(Roles = "Admin")]
 
     }
 }

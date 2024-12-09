@@ -11,8 +11,5 @@ namespace Hotel_Backend_API.DTO.Payment
         public decimal Amount { get; set; }
         public string PaymentDate { get; set; }
         public string StatusDone { get; set; } 
-
-        [MaxLength(10)]
-        public string Method { get; set; }
     }
 }

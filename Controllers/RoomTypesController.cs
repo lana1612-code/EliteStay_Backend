@@ -1,6 +1,7 @@
 ﻿using Hotel_Backend_API.Data;
 using Hotel_Backend_API.DTO.RoomType;
 using Hotel_Backend_API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -118,6 +119,7 @@ namespace Hotel_Backend_API.Controllers
 
 
         [HttpPost("add_room_type")]
+        [Authorize(Roles = "AdminHotel")]
         public async Task<IActionResult> AddRoomType([FromBody] RoomTypeDTO newRoomTypeDto)
         {
             try
@@ -163,6 +165,7 @@ namespace Hotel_Backend_API.Controllers
 
 
         [HttpPut("update_room_type/{id}")]
+        [Authorize(Roles = "AdminHotel")]
         public async Task<IActionResult> UpdateRoomType(int id, [FromBody] RoomTypeDTO updateRoomTypeDto)
 
         {
@@ -208,6 +211,7 @@ namespace Hotel_Backend_API.Controllers
 
 
         [HttpDelete("delete_room_type/{id}")]
+        [Authorize(Roles = "AdminHotel")]
         public async Task<IActionResult> DeleteRoomType(int id)
         {
             try

@@ -152,3 +152,4 @@ C:\Users\Admin\OneDrive\CE-University X_X\First Semester 2024\Graduation Project
 C:\Users\Admin\OneDrive\CE-University X_X\First Semester 2024\Graduation Project (1)\Work\Hotel_Backend_API\obj\Debug\net8.0\Hotel_Backend_API.pdb
 C:\Users\Admin\OneDrive\CE-University X_X\First Semester 2024\Graduation Project (1)\Work\Hotel_Backend_API\obj\Debug\net8.0\Hotel_Backend_API.genruntimeconfig.cache
 C:\Users\Admin\OneDrive\CE-University X_X\First Semester 2024\Graduation Project (1)\Work\Hotel_Backend_API\obj\Debug\net8.0\ref\Hotel_Backend_API.dll
+C:\Users\Admin\OneDrive\CE-University X_X\First Semester 2024\Graduation Project (1)\Work\Hotel_Backend_API\obj\Debug\net8.0\Hotel_Backend_API.sourcelink.json

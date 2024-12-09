@@ -21,7 +21,6 @@ namespace Hotel_Backend_API.Models
         // {
         //     Available,
         //     Occupied,
-        //     Maintenance
         // }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Hotel_Backend_API.Data;
 using Hotel_Backend_API.DTO.Guest;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +18,7 @@ namespace Hotel_Backend_API.Controllers
         }
 
         [HttpGet("get_All_Guests")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllGuests(int pageNumber = 1, int pageSize = 10)
         {
             var totalGuests = await dbContext.Guests.CountAsync();
@@ -48,6 +50,7 @@ namespace Hotel_Backend_API.Controllers
 
 
         [HttpGet("get_All_Guests_In_Hotel")]
+        [Authorize(Roles = "AdminHotel")]
         public async Task<IActionResult> GetAllGuests(int hotelId, int pageNumber = 1, int pageSize = 10)
         {
             var totalGuests = await dbContext.Bookings
@@ -91,6 +94,7 @@ namespace Hotel_Backend_API.Controllers
 
 
         [HttpGet("get_Guest_by_id/{id}")]
+        [Authorize]
         public async Task<IActionResult> GetGuestById(int id)
         {
             var guest = await dbContext.Guests

@@ -14,17 +14,13 @@ namespace Hotel_Backend_API.Models
         public decimal Amount { get; set; }
 
         public DateTime PaymentDate { get; set; }
-        public string StatusDone { get; set; } = "NO";
+        public string StatusDone { get; set; }
 
         [MaxLength(10)]
-        public string Method { get; set; } = "Cash";
+        public string Method { get; set; }
 
         public virtual Booking Booking { get; set; }
     }
 
-    //  public enum PaymentMethod
-    //  {
-    //      Cash,
-    //      BankCard
-    //  }
+  
 }

@@ -278,6 +278,7 @@ namespace Hotel_Backend_API.Controllers
 
         [Authorize]
         [HttpPost("add_room")]
+        [Authorize(Roles = "AdminHotel")]
         public async Task<IActionResult> AddRoom([FromBody] AddRoomDTO newRoomDto)
         {
             try
@@ -312,6 +313,7 @@ namespace Hotel_Backend_API.Controllers
 
 
         [HttpPut("update_room/{id}")]
+        [Authorize(Roles = "AdminHotel")]
         public async Task<IActionResult> UpdateRoom(int id, [FromBody] UpdateRoomDTO updateRoomDto)
         {
             try
@@ -343,6 +345,7 @@ namespace Hotel_Backend_API.Controllers
 
 
         [HttpPut("update_room_To_Available/{id}")]
+        [Authorize(Roles = "AdminHotel")]
         public async Task<IActionResult> UpdateRoom(int id)
         {
             try
@@ -373,6 +376,7 @@ namespace Hotel_Backend_API.Controllers
 
 
         [HttpDelete("delete_room/{id}")]
+        [Authorize(Roles = "AdminHotel")]
         public async Task<IActionResult> DeleteRoom(int id)
         {
             try
