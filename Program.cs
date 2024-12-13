@@ -44,6 +44,7 @@ namespace Hotel_Backend_API
             }).AddEntityFrameworkStores<ApplicationDbContext>();
 
             builder.Services.AddScoped<AuthService>();
+            builder.Services.AddScoped<HotelService>();
 
             builder.Services.AddAuthentication(options =>
             {

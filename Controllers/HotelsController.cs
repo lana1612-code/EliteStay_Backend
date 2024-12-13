@@ -3,6 +3,7 @@ using Hotel_Backend_API.Data;
 using Hotel_Backend_API.DTO.Booking;
 using Hotel_Backend_API.DTO.Hotel;
 using Hotel_Backend_API.Models;
+using Hotel_Backend_API.Services;
 using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,10 +17,13 @@ namespace Hotel_Backend_API.Controllers
     public class HotelsController : ControllerBase
     {
         private readonly ApplicationDbContext dbContext;
+        private readonly HotelService hotelService;
 
-        public HotelsController(ApplicationDbContext dbContext)
+        public HotelsController(ApplicationDbContext dbContext,
+                                HotelService hotelService)
         {
             this.dbContext = dbContext;
+            this.hotelService = hotelService;
         }
 
         [HttpGet("get_All_Hotel")]
@@ -59,19 +63,19 @@ namespace Hotel_Backend_API.Controllers
         {
             try
             {
-                var hotel = await dbContext.Hotels.FindAsync(id);
+                var hotel = await hotelService.GetHotelByIdAsync(id);
                 if (hotel == null)
                     return NotFound();
 
                 var response = hotel.Adapt<AddHotel>();
                 return Ok(response);
+
             }
             catch (Exception ex)
             {
                 return StatusCode(500, "an error while get hotel");
             }
         }
-
 
         [HttpGet("get_Hotel_ByStars")]
         public async Task<IActionResult> GetByStars(int num_stars, int pageNumber = 1, int pageSize = 10)

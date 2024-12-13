@@ -32,5 +32,11 @@ namespace Hotel_Backend_API.Data
         public DbSet<Complaint> Complaints { get; set; }
 
         public DbSet<AdminHotel> AdminHotels { get; set; }
+
+        public DbSet<Rating> Ratings { get; set; }
+
+        public DbSet<Recommended> Recommendeds { get; set; }
+
+
     }
 }

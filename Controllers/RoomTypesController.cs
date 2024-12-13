@@ -4,6 +4,7 @@ using Hotel_Backend_API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Hotel_Backend_API.Controllers
 {
@@ -18,7 +19,7 @@ namespace Hotel_Backend_API.Controllers
         {
             this.dbContext = dbContext;
         }
-
+        
         [HttpGet("get_All_RoomTypes")]
         public async Task<IActionResult> GetAllRoomTypes(int pageNumber = 1, int pageSize = 10)
         {
@@ -26,7 +27,7 @@ namespace Hotel_Backend_API.Controllers
             var roomTypes = await dbContext.RoomTypes
                                            .Skip((pageNumber - 1) * pageSize)
                                            .Take(pageSize)
-                                           .Select(rt => new RoomTypeDTO
+                                           .Select(rt => new ReturnRoomTypeDTO
                                            {
                                                Name = rt.Name,
                                                PricePerNight = rt.PricePerNight,
@@ -50,14 +51,14 @@ namespace Hotel_Backend_API.Controllers
 
             return Ok(response);
         }
-
+      
 
         [HttpGet("get_RoomType_by_id/{id}")]
         public async Task<IActionResult> GetRoomTypeById(int id)
         {
             var roomType = await dbContext.RoomTypes
                                            .Where(rt => rt.Id == id)
-                                           .Select(rt => new RoomTypeDTO
+                                           .Select(rt => new ReturnRoomTypeDTO
                                            {
                                                Name = rt.Name,
                                                PricePerNight = rt.PricePerNight,
@@ -87,7 +88,7 @@ namespace Hotel_Backend_API.Controllers
                     .Where(rt => dbContext.Rooms.Any(r => r.RoomTypeId == rt.Id && r.HotelId == hotelId))
                     .Skip((pageNumber - 1) * pageSize)
                     .Take(pageSize)
-                    .Select(rt => new RoomTypeDTO
+                    .Select(rt => new ReturnRoomTypeDTO
                     {
                         Name = rt.Name,
                         PricePerNight = rt.PricePerNight,
@@ -117,15 +118,40 @@ namespace Hotel_Backend_API.Controllers
             }
         }
 
-
+        
         [HttpPost("add_room_type")]
-        [Authorize(Roles = "AdminHotel")]
-        public async Task<IActionResult> AddRoomType([FromBody] RoomTypeDTO newRoomTypeDto)
+     //   [Authorize(Roles = "AdminHotel")]
+        public async Task<IActionResult> AddRoomType([FromForm] RoomTypeDTO newRoomTypeDto)
         {
             try
             {
                 if (newRoomTypeDto == null)
                     return BadRequest("Room type data is required.");
+                /*******************************************************/
+                if (newRoomTypeDto.ImageURL == null || newRoomTypeDto.ImageURL.Length == 0)
+                {
+                    return BadRequest("No image provided.");
+                }
+
+                if (!newRoomTypeDto.ImageURL.ContentType.Contains("image"))
+                {
+                    return BadRequest("Invalid image format.");
+                }
+
+                string rootFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "images");
+                Directory.CreateDirectory(rootFolderPath);
+
+                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(newRoomTypeDto.ImageURL.FileName);
+                string filePath = Path.Combine(rootFolderPath, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await newRoomTypeDto.ImageURL.CopyToAsync(stream);
+                }
+
+
+                /*******************************************************/
+
 
                 var newRoomType = new RoomType
                 {
@@ -133,13 +159,14 @@ namespace Hotel_Backend_API.Controllers
                     PricePerNight = newRoomTypeDto.PricePerNight,
                     Capacity = newRoomTypeDto.Capacity,
                     Description = newRoomTypeDto.Description,
-                    ImageURL = newRoomTypeDto.ImageURL
+                    ImageURL = ""
                 };
+                newRoomType.ImageURL = filePath;
 
                 dbContext.RoomTypes.Add(newRoomType);
                 await dbContext.SaveChangesAsync();
 
-                var roomTypeDto = new RoomTypeDTO
+                var roomTypeDto = new ReturnRoomTypeDTO
                 {
                     Name = newRoomType.Name,
                     PricePerNight = newRoomType.PricePerNight,
@@ -163,7 +190,7 @@ namespace Hotel_Backend_API.Controllers
 
         }
 
-
+        /*
         [HttpPut("update_room_type/{id}")]
         [Authorize(Roles = "AdminHotel")]
         public async Task<IActionResult> UpdateRoomType(int id, [FromBody] RoomTypeDTO updateRoomTypeDto)
@@ -209,7 +236,7 @@ namespace Hotel_Backend_API.Controllers
             }
         }
 
-
+        */
         [HttpDelete("delete_room_type/{id}")]
         [Authorize(Roles = "AdminHotel")]
         public async Task<IActionResult> DeleteRoomType(int id)
