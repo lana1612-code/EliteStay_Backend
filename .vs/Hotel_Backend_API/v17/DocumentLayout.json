@@ -1,7 +1,24 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\Admin\\OneDrive\\CE-University X_X\\First Semester 2024\\Graduation Project (1)\\Work\\Hotel_Backend_API\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{2BA81B52-541C-4EEA-9973-97E942127E0B}|Hotel_Backend_API.csproj|c:\\users\\admin\\onedrive\\ce-university x_x\\first semester 2024\\graduation project (1)\\work\\hotel_backend_api\\controllers\\recommendedscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2BA81B52-541C-4EEA-9973-97E942127E0B}|Hotel_Backend_API.csproj|solutionrelative:controllers\\recommendedscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2BA81B52-541C-4EEA-9973-97E942127E0B}|Hotel_Backend_API.csproj|c:\\users\\admin\\onedrive\\ce-university x_x\\first semester 2024\\graduation project (1)\\work\\hotel_backend_api\\controllers\\ratingscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2BA81B52-541C-4EEA-9973-97E942127E0B}|Hotel_Backend_API.csproj|solutionrelative:controllers\\ratingscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2BA81B52-541C-4EEA-9973-97E942127E0B}|Hotel_Backend_API.csproj|c:\\users\\admin\\onedrive\\ce-university x_x\\first semester 2024\\graduation project (1)\\work\\hotel_backend_api\\models\\rating.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2BA81B52-541C-4EEA-9973-97E942127E0B}|Hotel_Backend_API.csproj|solutionrelative:models\\rating.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2BA81B52-541C-4EEA-9973-97E942127E0B}|Hotel_Backend_API.csproj|c:\\users\\admin\\onedrive\\ce-university x_x\\first semester 2024\\graduation project (1)\\work\\hotel_backend_api\\models\\recommended.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2BA81B52-541C-4EEA-9973-97E942127E0B}|Hotel_Backend_API.csproj|solutionrelative:models\\recommended.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 1,
@@ -9,11 +26,63 @@
       "DocumentGroups": [
         {
           "DockedHeight": 490,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "RecommendedsController.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\CE-University X_X\\First Semester 2024\\Graduation Project (1)\\Work\\Hotel_Backend_API\\Controllers\\RecommendedsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\RecommendedsController.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\CE-University X_X\\First Semester 2024\\Graduation Project (1)\\Work\\Hotel_Backend_API\\Controllers\\RecommendedsController.cs",
+              "RelativeToolTip": "Controllers\\RecommendedsController.cs",
+              "ViewState": "AQIAAA8AAAAAAAAAAAAgwEEAAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-13T16:48:53.701Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "RatingsController.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\CE-University X_X\\First Semester 2024\\Graduation Project (1)\\Work\\Hotel_Backend_API\\Controllers\\RatingsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\RatingsController.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\CE-University X_X\\First Semester 2024\\Graduation Project (1)\\Work\\Hotel_Backend_API\\Controllers\\RatingsController.cs",
+              "RelativeToolTip": "Controllers\\RatingsController.cs",
+              "ViewState": "AQIAAJgAAAAAAAAAAAAmwKIAAAANAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-13T16:48:39.241Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Rating.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\CE-University X_X\\First Semester 2024\\Graduation Project (1)\\Work\\Hotel_Backend_API\\Models\\Rating.cs",
+              "RelativeDocumentMoniker": "Models\\Rating.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\CE-University X_X\\First Semester 2024\\Graduation Project (1)\\Work\\Hotel_Backend_API\\Models\\Rating.cs",
+              "RelativeToolTip": "Models\\Rating.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-13T16:47:31.997Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Recommended.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\CE-University X_X\\First Semester 2024\\Graduation Project (1)\\Work\\Hotel_Backend_API\\Models\\Recommended.cs",
+              "RelativeDocumentMoniker": "Models\\Recommended.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\CE-University X_X\\First Semester 2024\\Graduation Project (1)\\Work\\Hotel_Backend_API\\Models\\Recommended.cs",
+              "RelativeToolTip": "Models\\Recommended.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-13T16:44:42.611Z",
+              "EditorCaption": ""
             }
           ]
         },

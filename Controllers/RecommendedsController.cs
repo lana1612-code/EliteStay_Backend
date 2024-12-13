@@ -21,7 +21,7 @@ namespace Hotel_Backend_API.Controllers
             this.dbContex = dbContex;
             this.hotelService = hotelService;
         }
-        
+      // get the Trend hotel using the table that has data [ 1000 row ]
         [HttpGet("Get_Trend_Hotel")]
         public async Task<ActionResult> GetTrend()
         {
@@ -61,15 +61,7 @@ namespace Hotel_Backend_API.Controllers
             }
 
             return Ok(hotelDetails);
-
-
-            return Ok(hotelDetails);
         }
-        
-        [HttpGet("Get_Recommended_Hotel")]
-        public async Task<ActionResult> GetRecommendedHotel()
-        {
-            return Ok();
-        }
+  
     }
 }
