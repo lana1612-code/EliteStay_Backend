@@ -356,14 +356,12 @@ namespace Hotel_Backend_API.Controllers
 
                 room.Status = "Available";
 
-              var data =  room.Adapt<RoomDTO>();
 
                 dbContext.Rooms.Update(room);
                 await dbContext.SaveChangesAsync();
                 var response = new
                 {
-                    Message = "Update Room Success",
-                    Data = data
+                    Message = "Update Room status Success",
                 };
                 return Ok(response);
             }

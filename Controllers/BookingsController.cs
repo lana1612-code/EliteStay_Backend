@@ -574,7 +574,5 @@ namespace Hotel_Backend_API.Controllers
             return Ok("Room statuses updated and notifications sent.");
 
         }
-
-
     }
 }

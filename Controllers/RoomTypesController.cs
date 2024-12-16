@@ -120,7 +120,7 @@ namespace Hotel_Backend_API.Controllers
 
         
         [HttpPost("add_room_type")]
-     //   [Authorize(Roles = "AdminHotel")]
+        [Authorize(Roles = "AdminHotel")]
         public async Task<IActionResult> AddRoomType([FromForm] RoomTypeDTO newRoomTypeDto)
         {
             try
