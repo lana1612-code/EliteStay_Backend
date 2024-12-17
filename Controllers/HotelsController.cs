@@ -271,6 +271,33 @@ namespace Hotel_Backend_API.Controllers
 
         }
 
+
+        [HttpGet("recommendation_Using_Tags")]
+        public async Task<IActionResult> GetRecommendations([FromQuery] string tagsSearchString, int numOfRecommendations = 10)
+        {
+            if (string.IsNullOrWhiteSpace(tagsSearchString))
+            {
+                return BadRequest("Search string must not be empty.");
+            }
+            try
+            {
+                var recommendations = await hotelService.GetHotelRecommendationsByTagsAsync(tagsSearchString, numOfRecommendations);
+                if (recommendations == null || !recommendations.Any())
+                {
+                    return NotFound("No recommendations found.");
+                }
+                var response  = recommendations.Adapt<IEnumerable<AddHotel>>();
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
+
+
+
         // [Authorize(Roles = "Admin,Normal")]
 
     }

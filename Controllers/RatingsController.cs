@@ -141,10 +141,12 @@ namespace Hotel_Backend_API.Controllers
             return Ok(ratingdto);
         }
 
+
         [HttpGet("Get_Trend_Hotel")]
         public async Task<ActionResult> GetTrend()
         {
-            var Trends = await dbContext.Ratings
+            // var Trends = await dbContext.Ratings
+            var Trends = await dbContext.Recommendeds
                              .GroupBy(r => r.HotelId)
                              .Select(group => new
                              {
@@ -184,6 +186,7 @@ namespace Hotel_Backend_API.Controllers
 
             return Ok(hotelDetails);
         }
+
 
     }
 }
