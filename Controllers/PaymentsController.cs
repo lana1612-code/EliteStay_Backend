@@ -10,7 +10,7 @@ namespace Hotel_Backend_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "AdminHotel")]
+    [Authorize(Roles = "AdminHotel,Admin")]
     public class PaymentsController : ControllerBase
     {
         private readonly ApplicationDbContext dbContext;

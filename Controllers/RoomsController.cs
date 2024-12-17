@@ -36,7 +36,11 @@ namespace Hotel_Backend_API.Controllers
                                            NameHotel = r.Hotel.Name,
                                            NameRoomType = r.RoomType.Name,
                                            RoomNumber = r.RoomNumber,
-                                           Status = r.Status
+                                           Status = r.Status,
+                                           PricePerNight = r.RoomType.PricePerNight,
+                                           Description = r.RoomType.Description,
+                                           Capacity = r.RoomType.Capacity,
+                                           ImageURL = r.RoomType.ImageURL
                                        })
                                        .ToListAsync();
 
@@ -68,7 +72,10 @@ namespace Hotel_Backend_API.Controllers
                                            NameHotel = r.Hotel.Name,
                                            NameRoomType = r.RoomType.Name,
                                            RoomNumber = r.RoomNumber,
-                                           Status = r.Status
+                                           Status = r.Status,
+                                           Description = r.RoomType.Description,
+                                           Capacity = r.RoomType.Capacity,
+                                           ImageURL = r.RoomType.ImageURL
                                        })
                                        .FirstOrDefaultAsync();
 
@@ -97,7 +104,10 @@ namespace Hotel_Backend_API.Controllers
                                            NameHotel = r.Hotel.Name,
                                            NameRoomType = r.RoomType.Name,
                                            RoomNumber = r.RoomNumber,
-                                           Status = r.Status
+                                           Status = r.Status,
+                                           Description = r.RoomType.Description,
+                                           Capacity = r.RoomType.Capacity,
+                                           ImageURL = r.RoomType.ImageURL
                                        })
                                        .ToListAsync();
 
@@ -135,7 +145,10 @@ namespace Hotel_Backend_API.Controllers
                                            NameHotel = r.Hotel.Name,
                                            NameRoomType = r.RoomType.Name,
                                            RoomNumber = r.RoomNumber,
-                                           Status = r.Status
+                                           Status = r.Status,
+                                           Description = r.RoomType.Description,
+                                           Capacity = r.RoomType.Capacity,
+                                           ImageURL = r.RoomType.ImageURL
                                        })
                                        .ToListAsync();
 
@@ -173,7 +186,10 @@ namespace Hotel_Backend_API.Controllers
                                            NameHotel = r.Hotel.Name,
                                            NameRoomType = r.RoomType.Name,
                                            RoomNumber = r.RoomNumber,
-                                           Status = r.Status
+                                           Status = r.Status,
+                                           Description = r.RoomType.Description,
+                                           Capacity = r.RoomType.Capacity,
+                                           ImageURL = r.RoomType.ImageURL
                                        })
                                        .ToListAsync();
 
@@ -211,7 +227,10 @@ namespace Hotel_Backend_API.Controllers
                                            NameHotel = r.Hotel.Name,
                                            NameRoomType = r.RoomType.Name,
                                            RoomNumber = r.RoomNumber,
-                                           Status = r.Status
+                                           Status = r.Status,
+                                           Description = r.RoomType.Description,
+                                           Capacity = r.RoomType.Capacity,
+                                           ImageURL = r.RoomType.ImageURL
                                        })
                                        .ToListAsync();
 
@@ -252,7 +271,10 @@ namespace Hotel_Backend_API.Controllers
                         NameHotel = r.Hotel.Name,
                         NameRoomType = r.RoomType.Name,
                         RoomNumber = r.RoomNumber,
-                        Status = r.Status.ToString()
+                        Status = r.Status.ToString(),
+                        Description = r.RoomType.Description,
+                        Capacity = r.RoomType.Capacity,
+                        ImageURL = r.RoomType.ImageURL
                     })
                     .ToListAsync();
 
@@ -278,7 +300,7 @@ namespace Hotel_Backend_API.Controllers
 
         [Authorize]
         [HttpPost("add_room")]
-        [Authorize(Roles = "AdminHotel")]
+        [Authorize(Roles = "AdminHotel,Admin")]
         public async Task<IActionResult> AddRoom([FromBody] AddRoomDTO newRoomDto)
         {
             try
@@ -313,7 +335,7 @@ namespace Hotel_Backend_API.Controllers
 
 
         [HttpPut("update_room/{id}")]
-        [Authorize(Roles = "AdminHotel")]
+        [Authorize(Roles = "AdminHotel,Admin")]
         public async Task<IActionResult> UpdateRoom(int id, [FromBody] UpdateRoomDTO updateRoomDto)
         {
             try
@@ -345,7 +367,7 @@ namespace Hotel_Backend_API.Controllers
 
 
         [HttpPut("update_room_To_Available/{id}")]
-        [Authorize(Roles = "AdminHotel")]
+        [Authorize(Roles = "AdminHotel,Admin")]
         public async Task<IActionResult> UpdateRoom(int id)
         {
             try
@@ -372,9 +394,8 @@ namespace Hotel_Backend_API.Controllers
         }
 
 
-
         [HttpDelete("delete_room/{id}")]
-        [Authorize(Roles = "AdminHotel")]
+        [Authorize(Roles = "AdminHotel,Admin")]
         public async Task<IActionResult> DeleteRoom(int id)
         {
             try

@@ -68,7 +68,19 @@ namespace Hotel_Backend_API.Controllers
             if (!reult.Succeeded)
                 return Unauthorized();
 
-            await userManager.AddToRoleAsync(user, "Normal");
+            var userRoles = await userManager.GetRolesAsync(user);
+
+            if (!userRoles.Contains("AdminHotel") && !userRoles.Contains("Admin"))
+            {
+                if (!userRoles.Contains("Normal"))
+                {
+                    await userManager.AddToRoleAsync(user, "Normal");
+                    userRoles.Add("Normal"); 
+                }
+            }
+
+            var distinctRoles = userRoles.Distinct().ToList();
+
 
             return Ok(new
             {
@@ -78,7 +90,9 @@ namespace Hotel_Backend_API.Controllers
                     Username = user.UserName,
                     Email = user.Email,
                     Phone = user.PhoneNumber,
+                    Role = distinctRoles,
                     Token = await authService.CreateTokenAsync(user, userManager)
+
                 }
             });
 

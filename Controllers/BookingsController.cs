@@ -81,7 +81,7 @@ namespace Hotel_Backend_API.Controllers
 
 
         [HttpGet("get_Booking_by_Id/{bookingId}")]
-        [Authorize(Roles = "AdminHotel")]
+        [Authorize(Roles = "AdminHotel,Admin")]
         public async Task<IActionResult> GetBookingById(int bookingId)
         {
             try
@@ -113,7 +113,7 @@ namespace Hotel_Backend_API.Controllers
 
 
         [HttpGet("get_Booking_by_Hotel_Id/{hotelId}")]
-        [Authorize(Roles = "AdminHotel")]
+        [Authorize(Roles = "AdminHotel,Admin")]
         public async Task<IActionResult> GetBookingsByHotelId(int hotelId, int page = 1, int pageSize = 10)
         {
             try
@@ -164,7 +164,7 @@ namespace Hotel_Backend_API.Controllers
 
 
         [HttpGet("get_Booking_for_User_By_User_Id/{userId}")]
-        [Authorize(Roles = "AdminHotel,Normal")]
+        [Authorize(Roles = "AdminHotel,Normal,Admin")]
         public async Task<IActionResult> GetBookingsByUserId(int userId, int page = 1, int pageSize = 10)
         {
             try
@@ -211,7 +211,7 @@ namespace Hotel_Backend_API.Controllers
 
 
         [HttpGet("get_Booking_within_date_filtering")]
-        [Authorize(Roles = "AdminHotel")]
+        [Authorize(Roles = "AdminHotel,Admin")]
         public async Task<IActionResult> GetAllBookings(int page = 1, int pageSize = 10, string startDate = null, string endDate = null)
         {
             try
@@ -259,7 +259,7 @@ namespace Hotel_Backend_API.Controllers
 
 
         [HttpGet("get_Bookings_within_date_filtering_In_Hotel")]
-        [Authorize(Roles = "AdminHotel")]
+        [Authorize(Roles = "AdminHotel,Admin")]
         public async Task<IActionResult> GetAllBookings(int hotelId, int page = 1, int pageSize = 10, string startDate = null, string endDate = null)
         {
             try
@@ -472,7 +472,7 @@ namespace Hotel_Backend_API.Controllers
 
 
         [HttpDelete("Delete_Booking/{id}")]
-        [Authorize(Roles = "AdminHotel,Normal")]
+        [Authorize(Roles = "AdminHotel,Normal,Admin")]
         public async Task<IActionResult> DeleteBooking(int id)
         {
             try
@@ -506,7 +506,7 @@ namespace Hotel_Backend_API.Controllers
         }
 
         [HttpPut("CheckBooking")]
-        [Authorize(Roles = "AdminHotel")]
+        [Authorize(Roles = "AdminHotel,Admin")]
         public async Task<IActionResult> CheckBooking()
         {
 

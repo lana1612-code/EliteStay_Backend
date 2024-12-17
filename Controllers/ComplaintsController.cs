@@ -57,7 +57,7 @@ namespace Hotel_Backend_API.Controllers
         
         
         [HttpGet("ComplainForHotel/{hotelId}")]
-        [Authorize(Roles = "AdminHotel")]
+        [Authorize(Roles = "AdminHotel,Admin")]
         public async Task<IActionResult> GetComplaints(int hotelId)
         {
             var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;

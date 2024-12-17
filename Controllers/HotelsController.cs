@@ -193,8 +193,7 @@ namespace Hotel_Backend_API.Controllers
 
         [HttpPut("Update_Hotel")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateHotel(int id,
-                                  [FromServices] IValidator<AddHotel> validator,
+        public async Task<IActionResult> UpdateHotel(int id,[FromServices] IValidator<AddHotel> validator,
                                   [FromBody] AddHotel updatehotel)
         {
             try
@@ -246,7 +245,7 @@ namespace Hotel_Backend_API.Controllers
             {
                 return StatusCode(500, "An error occurred while updating the hotel.");
             }
-        }
+        }   
 
         [HttpDelete("Delete_Hotel")]
         [Authorize(Roles = "Admin")]

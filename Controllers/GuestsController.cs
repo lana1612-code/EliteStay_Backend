@@ -50,7 +50,7 @@ namespace Hotel_Backend_API.Controllers
 
 
         [HttpGet("get_All_Guests_In_Hotel")]
-        [Authorize(Roles = "AdminHotel")]
+        [Authorize(Roles = "AdminHotel,Admin")]
         public async Task<IActionResult> GetAllGuests(int hotelId, int pageNumber = 1, int pageSize = 10)
         {
             var totalGuests = await dbContext.Bookings
