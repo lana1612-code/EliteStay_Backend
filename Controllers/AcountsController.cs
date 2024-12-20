@@ -9,16 +9,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hotel_Backend_API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("Admin/[controller]")]
     [ApiController]
-    public class AcountsController : ControllerBase
+    public class AdminAcountsController : ControllerBase
     {
         private readonly UserManager<AppUser> userManager;
         private readonly SignInManager<AppUser> signInManager;
         private readonly AuthService authService;
         private readonly ApplicationDbContext dbContext;
 
-        public AcountsController(UserManager<AppUser> userManager,
+        public AdminAcountsController(UserManager<AppUser> userManager,
                  SignInManager<AppUser> signInManager,
                  AuthService authService,
                  ApplicationDbContext dbContext)
@@ -69,17 +69,30 @@ namespace Hotel_Backend_API.Controllers
                 return Unauthorized();
 
             var userRoles = await userManager.GetRolesAsync(user);
+            var distinctRoles = userRoles.Distinct().ToList();
 
-            if (!userRoles.Contains("AdminHotel") && !userRoles.Contains("Admin"))
+            AdminHotel adminHotel = null;
+            if (userRoles.Contains("AdminHotel"))
             {
-                if (!userRoles.Contains("Normal"))
+                adminHotel = await dbContext.AdminHotels
+                    .FirstOrDefaultAsync(admin => admin.userName == user.UserName);
+
+                return Ok(new
                 {
-                    await userManager.AddToRoleAsync(user, "Normal");
-                    userRoles.Add("Normal"); 
-                }
+                    Message = "Login Success",
+                    UserInfo = new
+                    {
+                        Username = user.UserName,
+                        Email = user.Email,
+                        Phone = user.PhoneNumber,
+                        Role = distinctRoles,
+                        HotelId = adminHotel.HotelId,
+                        Token = await authService.CreateTokenAsync(user, userManager)
+
+                    }
+                });
             }
 
-            var distinctRoles = userRoles.Distinct().ToList();
 
 
             return Ok(new

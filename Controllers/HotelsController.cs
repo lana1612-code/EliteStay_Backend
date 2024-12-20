@@ -26,7 +26,7 @@ namespace Hotel_Backend_API.Controllers
             this.hotelService = hotelService;
         }
 
-        [HttpGet("Get_All_ID_Hotel")]
+        [HttpGet("Get_All_ID")]
         public async Task<IActionResult> GetAllIdHotel()
         {
             var ids = await dbContext.Hotels
