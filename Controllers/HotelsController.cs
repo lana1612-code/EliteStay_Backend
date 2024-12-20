@@ -26,6 +26,21 @@ namespace Hotel_Backend_API.Controllers
             this.hotelService = hotelService;
         }
 
+        [HttpGet("Get_All_ID_Hotel")]
+        public async Task<IActionResult> GetAllIdHotel()
+        {
+            var ids = await dbContext.Hotels
+                                   .Select(h => h.Id)
+                                   .ToListAsync();
+                                  
+            var response = new
+            {
+                Id = ids
+            };
+                                  
+            return Ok(response);
+        }
+
         [HttpGet("get_All_Hotel")]
         public async Task<IActionResult> GetAll(int pageNumber = 1, int pageSize = 10)
         {
@@ -294,10 +309,6 @@ namespace Hotel_Backend_API.Controllers
                 return StatusCode(500, $"An error occurred: {ex.Message}");
             }
         }
-
-
-
-        // [Authorize(Roles = "Admin,Normal")]
 
     }
 }

@@ -30,6 +30,7 @@ namespace Hotel_Backend_API.Controllers
                                            .Take(pageSize)
                                            .Select(p => new PaymentDTO
                                            {
+                                               Id = p.Id,
                                                BookingId = p.BookingId,
                                                Amount = p.Amount,
                                                PaymentDate = p.PaymentDate.ToString("yyyy-MM-dd"),
@@ -60,6 +61,7 @@ namespace Hotel_Backend_API.Controllers
                                           .Where(p => p.Id == id)
                                           .Select(p => new PaymentDTO
                                           {
+                                              Id = p.Id,
                                               BookingId = p.BookingId,
                                               Amount = p.Amount,
                                               PaymentDate = p.PaymentDate.ToString("yyyy-MM-dd"),
@@ -90,7 +92,7 @@ namespace Hotel_Backend_API.Controllers
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .Select(p => new PaymentDTO
-                {
+                {Id = p.Id,
                     BookingId = p.BookingId,
                     Amount = p.Amount,
                     PaymentDate = p.PaymentDate.ToString("yyyy-MM-dd"),

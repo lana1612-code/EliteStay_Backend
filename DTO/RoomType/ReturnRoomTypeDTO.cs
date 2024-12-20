@@ -4,6 +4,7 @@ namespace Hotel_Backend_API.DTO.RoomType
 {
     public class ReturnRoomTypeDTO
     {
+        public int Id { get; set; }
         public string Name { get; set; }
 
         [Column(TypeName = "decimal(10,2)")]

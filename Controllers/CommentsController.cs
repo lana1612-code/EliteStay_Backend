@@ -68,7 +68,7 @@ namespace Hotel_Backend_API.Controllers
                 return NotFound($"No comments found for hotel with ID [{hotelId}].");
             }
             var responseDto = comments.Select(c => new GetCommentDTO
-            {
+            {Id = c.Id,
                 HotelId = c.HotelId,
                 Content = c.Content,
                 CreatedAt = c.CreatedAt.ToString("yyyy-MM-dd  HH:mm:ss")

@@ -5,6 +5,7 @@ namespace Hotel_Backend_API.DTO.Payment
 {
     public class PaymentDTO
     {
+        public int Id { get; set; }
         public int BookingId { get; set; }
 
         [Column(TypeName = "decimal(10,2)")]

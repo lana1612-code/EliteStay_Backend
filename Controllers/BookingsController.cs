@@ -18,13 +18,15 @@ namespace Hotel_Backend_API.Controllers
         private readonly ApplicationDbContext dbContext;
         private readonly NotificationService notificationService;
         private readonly UserManager<AppUser> userManager;
+        private readonly totalPriceService totalPriceService;
 
         public BookingsController(ApplicationDbContext dbContext, NotificationService notificationService,
-                                  UserManager<AppUser> userManager)
+                                  UserManager<AppUser> userManager, totalPriceService totalPriceService)
         {
             this.dbContext = dbContext;
             this.notificationService = notificationService;
             this.userManager = userManager;
+            this.totalPriceService = totalPriceService;
         }
 
 
@@ -96,6 +98,7 @@ namespace Hotel_Backend_API.Controllers
 
                 var bookingDto = new BookingDTO
                 {
+                    Id = bookingId,
                     GuestName = booking.Guest.Name,
                     RoomNumber = booking.Room.RoomNumber,
                     CheckinDate = booking.CheckinDate.ToString("yyyy-MM-dd"),
@@ -138,6 +141,7 @@ namespace Hotel_Backend_API.Controllers
 
                 var bookingDtos = bookings.Select(b => new BookingDTO
                 {
+                    Id = b.Id,
                     GuestName = b.Guest.Name,
                     RoomNumber = b.Room.RoomNumber,
                     CheckinDate = b.CheckinDate.ToString("yyyy-MM-dd"),
@@ -164,7 +168,7 @@ namespace Hotel_Backend_API.Controllers
 
 
         [HttpGet("get_Booking_for_User_By_User_Id/{userId}")]
-        [Authorize(Roles = "AdminHotel,Normal,Admin")]
+        [Authorize(Roles = "Normal,Admin")]
         public async Task<IActionResult> GetBookingsByUserId(int userId, int page = 1, int pageSize = 10)
         {
             try
@@ -184,7 +188,7 @@ namespace Hotel_Backend_API.Controllers
                     return NotFound("No bookings found for the specified user.");
 
                 var bookingDtos = bookings.Select(b => new BookingDTO
-                {
+                {Id = b.Id,
                     GuestName = b.Guest.Name,
                     RoomNumber = b.Room.RoomNumber,
                     CheckinDate = b.CheckinDate.ToString("yyyy-MM-dd"),
@@ -206,6 +210,53 @@ namespace Hotel_Backend_API.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, "An error occurred while getting bookings for the specified user.");
+            }
+        }
+
+
+        [HttpGet("get_Booking_for_User_By_User_Id_And_Hotel_Id/{userId}/{hotelId}")]
+        [Authorize(Roles = "AdminHotel")]
+        public async Task<IActionResult> GetBookingsByUserIdAndHotelId(int userId, int hotelId, int page = 1, int pageSize = 10)
+        {
+            try
+            {
+                var totalBookings = await dbContext.Bookings
+                    .Include(b => b.Room)
+                    .CountAsync(b => b.Guest.Id == userId && b.Room.HotelId == hotelId);
+
+                var bookings = await dbContext.Bookings
+                    .Include(b => b.Guest)
+                    .Include(b => b.Room)
+                    .Where(b => b.Guest.Id == userId && b.Room.HotelId == hotelId)
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToListAsync();
+
+                if (bookings == null || !bookings.Any())
+                    return NotFound("No bookings found for the specified user in the specified hotel.");
+                var bookingDtos = bookings.Select(b => new BookingDTO
+                {Id = b.Id,
+                    GuestName = b.Guest.Name,
+                    RoomNumber = b.Room.RoomNumber,
+                    CheckinDate = b.CheckinDate.ToString("yyyy-MM-dd"),
+                    CheckoutDate = b.CheckoutDate.ToString("yyyy-MM-dd"),
+                    TotalPrice = b.TotalPrice
+                }).ToList();
+
+                var response = new
+                {
+                    TotalCount = totalBookings,
+                    PageSize = pageSize,
+                    CurrentPage = page,
+                    TotalPages = (int)Math.Ceiling(totalBookings / (double)pageSize),
+                    Data = bookingDtos
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while getting bookings for the specified user and hotel.");
             }
         }
 
@@ -232,7 +283,7 @@ namespace Hotel_Backend_API.Controllers
                 var bookings = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
 
                 var bookingDtos = bookings.Select(b => new BookingDTO
-                {
+                {Id = b.Id,
                     GuestName = b.Guest.Name,
                     RoomNumber = b.Room.RoomNumber,
                     CheckinDate = b.CheckinDate.ToString("yyyy-MM-dd"),
@@ -260,7 +311,7 @@ namespace Hotel_Backend_API.Controllers
 
         [HttpGet("get_Bookings_within_date_filtering_In_Hotel")]
         [Authorize(Roles = "AdminHotel,Admin")]
-        public async Task<IActionResult> GetAllBookings(int hotelId, int page = 1, int pageSize = 10, string startDate = null, string endDate = null)
+        public async Task<IActionResult> GetAllBookings(int hotelId, int page = 1, int pageSize = 10, string startDate = null, string endDate = null)   
         {
             try
             {
@@ -285,7 +336,7 @@ namespace Hotel_Backend_API.Controllers
                 var bookings = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
 
                 var bookingDtos = bookings.Select(b => new BookingDTO
-                {
+                {Id = b.Id,
                     GuestName = b.Guest.Name,
                     RoomNumber = b.Room.RoomNumber,
                     CheckinDate = b.CheckinDate.ToString("yyyy-MM-dd"),
@@ -343,16 +394,17 @@ namespace Hotel_Backend_API.Controllers
                 var phone = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.MobilePhone)?.Value;
 
                 var serach = await dbContext.Guests
-                 .FirstOrDefaultAsync(b => b.Name == username);
-                var guest = new Guest
-                {
-                    Name = email.Split("@")[0] ?? "Unknown",
-                    Email = email ?? "Unknown",
-                    Phone = phone ?? "Unknown"
-                };
+                 .FirstOrDefaultAsync(b => b.Email == email);
+
                 if (serach == null)
                 {
-                    await dbContext.Guests.AddAsync(guest);
+                    serach = new Guest
+                    {
+                        Name = email.Split("@")[0] ?? "Unknown",
+                        Email = email ?? "Unknown",
+                        Phone = phone ?? "Unknown"
+                    };
+                    await dbContext.Guests.AddAsync(serach);
                     await dbContext.SaveChangesAsync();
                 }
 
@@ -362,14 +414,17 @@ namespace Hotel_Backend_API.Controllers
 
                 if (room.Status != "Available")
                     return BadRequest("The room is not available.");
+                var roomtype = await dbContext.RoomTypes.FindAsync(room.RoomTypeId);
+
+                decimal totalPrice = totalPriceService.CalculateTotalPrice(checkinDate, checkoutDate, roomtype.PricePerNight);
 
                 var newBooking = new Booking
                 {
-                    GuestId = guest.Id,
+                    GuestId = serach.Id,
                     RoomId = newBookingDto.RoomId,
                     CheckinDate = checkinDate,
                     CheckoutDate = checkoutDate,
-                    TotalPrice = newBookingDto.TotalPrice
+                    TotalPrice = totalPrice
                 };
 
                 dbContext.Bookings.Add(newBooking);
@@ -384,7 +439,7 @@ namespace Hotel_Backend_API.Controllers
                 var newPayment = new Payment
                 {
                     BookingId = newBooking.Id,
-                    Amount = newBookingDto.TotalPrice,
+                    Amount = totalPrice,
                     PaymentDate = checkoutDate,
                     Method = method,
                     StatusDone = Status,
@@ -393,12 +448,12 @@ namespace Hotel_Backend_API.Controllers
                 dbContext.Payments.Add(newPayment);
                 await dbContext.SaveChangesAsync();
 
-                string notificationMessage = $"New booking created for guest {guest.Name} in room {room.RoomNumber}.";
+                string notificationMessage = $"New booking created for guest {serach.Name} in room {room.RoomNumber}.";
                 await notificationService.CreateNotificationAsync(userId, notificationMessage);
 
                 var bookingDto = new BookingDTO
                 {
-                    GuestName = guest.Name,
+                    GuestName = serach.Name,
                     RoomNumber = room.RoomNumber,
                     CheckinDate = newBooking.CheckinDate.ToString("yyyy-MM-dd"),
                     CheckoutDate = newBooking.CheckoutDate.ToString("yyyy-MM-dd"),
@@ -418,6 +473,16 @@ namespace Hotel_Backend_API.Controllers
             }
         }
 
+        [HttpGet("TotalPrice")]
+        public async Task<IActionResult> calcTotalPrice(DateTime checkinDate, DateTime checkoutDate ,int roomId)
+        {
+            var room = await dbContext.Rooms.FindAsync(roomId);
+
+            var roomtype = await dbContext.RoomTypes.FindAsync(room.RoomTypeId);
+
+            decimal totalPrice = totalPriceService.CalculateTotalPrice(checkinDate, checkoutDate, roomtype.PricePerNight);
+            return Ok(new { totalPrice = totalPrice });
+        }
 
         [HttpPut("Update_Booking/{id}")]
         [Authorize(Roles = "AdminHotel,Normal")]

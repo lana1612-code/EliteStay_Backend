@@ -95,6 +95,7 @@ namespace Hotel_Backend_API.Controllers
 
                 ratingdto.Add(new RatingDTO
                 {
+                    Id = rating.Id,
                     UserName = user.UserName,
                     HotelName = hotel.Name,
                     RatingValue = rating.RatingValue
@@ -133,6 +134,7 @@ namespace Hotel_Backend_API.Controllers
 
                 ratingdto.Add(new returnRatingDTO
                 {
+                    Id = rating.Id,
                     UserName = user.UserName,
                     RatingValue = rating.RatingValue
                 });
@@ -183,8 +185,6 @@ namespace Hotel_Backend_API.Controllers
 
             return Ok(hotelDetails);
 
-
-            return Ok(hotelDetails);
         }
 
 

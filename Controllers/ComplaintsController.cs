@@ -80,6 +80,7 @@ namespace Hotel_Backend_API.Controllers
                 var user = await userManager.FindByIdAsync(Complain.UserId);
                 var complaindto = new ReturnComplainDTO 
                 {
+                    Id = Complain.Id,
                     EmailUser = user.Email,
                     NameUser = user.UserName,
                     Content = Complain.Content,

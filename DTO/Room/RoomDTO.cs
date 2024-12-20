@@ -2,6 +2,7 @@
 {
     public class RoomDTO
     {
+        public int Id { get; set; }
         public string NameHotel { get; set; }
         public string NameRoomType { get; set; }
         public string RoomNumber { get; set; }

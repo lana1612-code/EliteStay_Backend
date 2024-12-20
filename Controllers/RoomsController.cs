@@ -33,6 +33,7 @@ namespace Hotel_Backend_API.Controllers
                                        .Take(pageSize)
                                        .Select(r => new RoomDTO
                                        {
+                                           Id = r.Id,
                                            NameHotel = r.Hotel.Name,
                                            NameRoomType = r.RoomType.Name,
                                            RoomNumber = r.RoomNumber,
@@ -69,6 +70,7 @@ namespace Hotel_Backend_API.Controllers
                                        .Where(r => r.Id == id)
                                        .Select(r => new RoomDTO
                                        {
+                                           Id = r.Id,
                                            NameHotel = r.Hotel.Name,
                                            NameRoomType = r.RoomType.Name,
                                            RoomNumber = r.RoomNumber,
@@ -101,6 +103,7 @@ namespace Hotel_Backend_API.Controllers
                                        .Take(pageSize)
                                        .Select(r => new RoomDTO
                                        {
+                                           Id = r.Id,
                                            NameHotel = r.Hotel.Name,
                                            NameRoomType = r.RoomType.Name,
                                            RoomNumber = r.RoomNumber,
@@ -141,7 +144,7 @@ namespace Hotel_Backend_API.Controllers
                                        .Skip((pageNumber - 1) * pageSize)
                                        .Take(pageSize)
                                        .Select(r => new RoomDTO
-                                       {
+                                       {   Id = r.Id,
                                            NameHotel = r.Hotel.Name,
                                            NameRoomType = r.RoomType.Name,
                                            RoomNumber = r.RoomNumber,
@@ -182,7 +185,7 @@ namespace Hotel_Backend_API.Controllers
                                        .Skip((pageNumber - 1) * pageSize)
                                        .Take(pageSize)
                                        .Select(r => new RoomDTO
-                                       {
+                                       {Id = r.Id,
                                            NameHotel = r.Hotel.Name,
                                            NameRoomType = r.RoomType.Name,
                                            RoomNumber = r.RoomNumber,
@@ -223,7 +226,7 @@ namespace Hotel_Backend_API.Controllers
                                        .Skip((pageNumber - 1) * pageSize)
                                        .Take(pageSize)
                                        .Select(r => new RoomDTO
-                                       {
+                                       {Id = r.Id,
                                            NameHotel = r.Hotel.Name,
                                            NameRoomType = r.RoomType.Name,
                                            RoomNumber = r.RoomNumber,
@@ -268,6 +271,7 @@ namespace Hotel_Backend_API.Controllers
                     .Take(pageSize)
                     .Select(r => new RoomDTO
                     {
+                        Id = r.Id,
                         NameHotel = r.Hotel.Name,
                         NameRoomType = r.RoomType.Name,
                         RoomNumber = r.RoomNumber,

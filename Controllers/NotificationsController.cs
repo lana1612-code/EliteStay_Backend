@@ -44,6 +44,7 @@ namespace Hotel_Backend_API.Controllers
             {
                 var notiDTO = new NotificationDTO
                 {
+                    Id = userNotification.Id,
                     Message = userNotification.Notification.Message,
                     sentAt = userNotification.SentAt.ToString("yyyy-MM-dd"),
                     IsRead = userNotification.IsRead
