@@ -30,62 +30,6 @@ namespace Hotel_Backend_API.Controllers.Users
         }
 
 
-        [HttpGet("GetAll/date_filtering/{hotelId}")]
-        public async Task<IActionResult> GetAllBookings(int hotelId, int page = 1, int pageSize = 10, string startDate = null, string endDate = null)
-        {
-            try
-            {
-                var query = dbContext.Bookings
-                                      .Include(b => b.Guest)
-                                      .Include(b => b.Room)
-                                      .Where(b => b.Room.HotelId == hotelId) // Filter by hotelId  
-                                      .AsQueryable();
-
-                if (!string.IsNullOrEmpty(startDate) && DateTime.TryParse(startDate, out DateTime parsedStartDate))
-                {
-                    query = query.Where(b => b.CheckinDate >= parsedStartDate);
-                }
-
-                if (!string.IsNullOrEmpty(endDate) && DateTime.TryParse(endDate, out DateTime parsedEndDate))
-                {
-                    query = query.Where(b => b.CheckoutDate <= parsedEndDate);
-                }
-
-                var totalBookings = await query.CountAsync();
-
-                var bookings = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
-
-                var bookingDtos = bookings.Select(b => new BookingDTO
-                {
-                    Id = b.Id,
-                    GuestName = b.Guest.Name,
-                    RoomNumber = b.Room.RoomNumber,
-                    CheckinDate = b.CheckinDate.ToString("yyyy-MM-dd"),
-                    CheckoutDate = b.CheckoutDate.ToString("yyyy-MM-dd"),
-                    TotalPrice = b.TotalPrice
-                }).ToList();
-
-                if (!bookingDtos.Any())
-                    return NotFound();
-
-                var response = new
-                {
-                    TotalCount = totalBookings,
-                    PageSize = pageSize,
-                    CurrentPage = page,
-                    TotalPages = (int)Math.Ceiling(totalBookings / (double)pageSize),
-                    Data = bookingDtos
-                };
-
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "An error occurred while getting bookings.");
-            }
-        }
-
-
         [HttpGet("GetAll/User")]
         public async Task<IActionResult> GetBookingsByUserId( int page = 1, int pageSize = 10)
         {
@@ -97,24 +41,31 @@ namespace Hotel_Backend_API.Controllers.Users
                 {
                     return Unauthorized("User ID not found in token.");
                 }
-                var username = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
 
+                var username = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName)?.Value;
                 var guest = await dbContext.Guests
-                  .FirstOrDefaultAsync(b => b.Name == username);
+                    .FirstOrDefaultAsync(g => g.Name.Equals(username));
+                if (guest == null)
+                {
+                    return NotFound("No guest found with the specified username.");
+                }
+
 
                 var totalBookings = await dbContext.Bookings
-                    .CountAsync(b => b.Guest.Id == guest.Id);
+                         .CountAsync(b => b.GuestId == guest.Id);
 
                 var bookings = await dbContext.Bookings
                     .Include(b => b.Guest)
                     .Include(b => b.Room)
-                    .Where(b => b.Guest.Id == guest.Id)
+                    .Where(b => b.GuestId == guest.Id)
                     .Skip((page - 1) * pageSize)
                     .Take(pageSize)
                     .ToListAsync();
 
-                if (bookings == null || !bookings.Any())
+                if (!bookings.Any())
+                {
                     return NotFound("No bookings found for the specified user.");
+                }
 
                 var bookingDtos = bookings.Select(b => new BookingDTO
                 {
@@ -136,6 +87,8 @@ namespace Hotel_Backend_API.Controllers.Users
                 };
 
                 return Ok(response);
+
+
             }
             catch (Exception ex)
             {
@@ -243,10 +196,17 @@ namespace Hotel_Backend_API.Controllers.Users
                 var response = new
                 {
                     Message = "Add Booking Success",
-                    Data = bookingDto
+                    Data = new
+                    {
+                        GuestName = serach.Name,
+                        RoomNumber = room.RoomNumber,
+                        CheckinDate = newBooking.CheckinDate.ToString("yyyy-MM-dd"),
+                        CheckoutDate = newBooking.CheckoutDate.ToString("yyyy-MM-dd"),
+                        TotalPrice = newBooking.TotalPrice
+                    }
                 };
 
-                return CreatedAtAction(nameof(GetAllBookings), new { id = newBooking.Id }, response);
+                return Ok(response);
             }
             catch (Exception ex)
             {
@@ -286,11 +246,15 @@ namespace Hotel_Backend_API.Controllers.Users
                 if (checkoutDate <= checkinDate)
                     return BadRequest("Check-out date must be after check-in date.");
 
-                existingBooking.GuestId = updatedBookingDto.GuestId;
-                existingBooking.RoomId = updatedBookingDto.RoomId;
+
+                var room = await dbContext.Rooms.FindAsync(existingBooking.RoomId);
+                var roomtype = await dbContext.RoomTypes.FindAsync(room.RoomTypeId);
+
+                decimal totalPrice = totalPriceService.CalculateTotalPrice(checkinDate, checkoutDate, roomtype.PricePerNight);
+
                 existingBooking.CheckinDate = DateTime.Parse(updatedBookingDto.CheckinDate);
                 existingBooking.CheckoutDate = DateTime.Parse(updatedBookingDto.CheckoutDate);
-                existingBooking.TotalPrice = updatedBookingDto.TotalPrice;
+                existingBooking.TotalPrice = totalPrice;
 
                 await dbContext.SaveChangesAsync();
 
@@ -313,6 +277,7 @@ namespace Hotel_Backend_API.Controllers.Users
             {
                 return StatusCode(500, "An error occurred while updating the booking.");
             }
+        
         }
 
 

@@ -61,48 +61,6 @@ namespace Hotel_Backend_API.Controllers.Users
         }
 
 
-        [HttpGet("GetAll/{hotelId}")]
-        public async Task<IActionResult> GetAllRoomsInHotel(int hotelId, int pageNumber = 1, int pageSize = 10)
-        {
-            var totalRooms = await dbContext.Rooms
-                                             .Where(r => r.HotelId == hotelId)
-                                             .CountAsync();
-
-            var rooms = await dbContext.Rooms
-                                       .Include(r => r.Hotel)
-                                       .Include(r => r.RoomType)
-                                       .Where(r => r.HotelId == hotelId)
-                                       .Skip((pageNumber - 1) * pageSize)
-                                       .Take(pageSize)
-                                       .Select(r => new RoomDTO
-                                       {
-                                           Id = r.Id,
-                                           NameHotel = r.Hotel.Name,
-                                           NameRoomType = r.RoomType.Name,
-                                           RoomNumber = r.RoomNumber,
-                                           Status = r.Status,
-                                           Description = r.RoomType.Description,
-                                           Capacity = r.RoomType.Capacity,
-                                           ImageURL = r.RoomType.ImageURL
-                                       })
-                                       .ToListAsync();
-
-            if (!rooms.Any())
-                return BadRequest("No rooms found for the specified hotel.");
-
-            var response = new
-            {
-                TotalCount = totalRooms,
-                PageSize = pageSize,
-                CurrentPage = pageNumber,
-                TotalPages = (int)Math.Ceiling(totalRooms / (double)pageSize),
-                Data = rooms
-            };
-
-            return Ok(response);
-        }
-
-
         [HttpGet("GetAll_available")]
         public async Task<IActionResult> GetAllAvailableRooms(int pageNumber = 1, int pageSize = 10)
         {
