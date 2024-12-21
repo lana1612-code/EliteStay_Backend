@@ -146,7 +146,30 @@ namespace Hotel_Backend_API.Controllers
             await dbContext.SaveChangesAsync();
             return Ok("Role assigned successfully");
         }
-   
+
+
+
+        [HttpPut("AssignRoleToAdmin")]
+        public async Task<IActionResult> AssignRoleAdmin(string username)
+        {
+            var user = await userManager.FindByNameAsync(username);
+
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            var result = await userManager.AddToRoleAsync(user, "Admin");
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
+            }
+           
+            await dbContext.SaveChangesAsync();
+            return Ok("Role assigned successfully");
+        }
+
+
     }
 
 
