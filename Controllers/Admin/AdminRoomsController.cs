@@ -37,6 +37,7 @@ namespace Hotel_Backend_API.Controllers
                                            NameRoomType = r.RoomType.Name,
                                            RoomNumber = r.RoomNumber,
                                            Status = r.Status,
+                                           PricePerNight = r.RoomType.PricePerNight,
                                            Description = r.RoomType.Description,
                                            Capacity = r.RoomType.Capacity,
                                            ImageURL = r.RoomType.ImageURL
@@ -67,6 +68,7 @@ namespace Hotel_Backend_API.Controllers
                                            NameRoomType = r.RoomType.Name,
                                            RoomNumber = r.RoomNumber,
                                            Status = r.Status,
+                                           PricePerNight = r.RoomType.PricePerNight,
                                            Description = r.RoomType.Description,
                                            Capacity = r.RoomType.Capacity,
                                            ImageURL = r.RoomType.ImageURL
@@ -105,6 +107,7 @@ namespace Hotel_Backend_API.Controllers
                                            NameRoomType = r.RoomType.Name,
                                            RoomNumber = r.RoomNumber,
                                            Status = r.Status,
+                                           PricePerNight = r.RoomType.PricePerNight,
                                            Description = r.RoomType.Description,
                                            Capacity = r.RoomType.Capacity,
                                            ImageURL = r.RoomType.ImageURL
@@ -143,6 +146,7 @@ namespace Hotel_Backend_API.Controllers
                                            NameRoomType = r.RoomType.Name,
                                            RoomNumber = r.RoomNumber,
                                            Status = r.Status,
+                                           PricePerNight = r.RoomType.PricePerNight,
                                            Description = r.RoomType.Description,
                                            Capacity = r.RoomType.Capacity,
                                            ImageURL = r.RoomType.ImageURL
@@ -185,6 +189,7 @@ namespace Hotel_Backend_API.Controllers
                         NameRoomType = r.RoomType.Name,
                         RoomNumber = r.RoomNumber,
                         Status = r.Status.ToString(),
+                        PricePerNight = r.RoomType.PricePerNight,
                         Description = r.RoomType.Description,
                         Capacity = r.RoomType.Capacity,
                         ImageURL = r.RoomType.ImageURL
