@@ -12,7 +12,7 @@ namespace Hotel_Backend_API.Controllers.Users
 {
     [Route("Normal/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Normal")]
+    [Authorize]
     public class BookingsController : ControllerBase
     {
         private readonly ApplicationDbContext dbContext;
@@ -61,11 +61,6 @@ namespace Hotel_Backend_API.Controllers.Users
                     .Skip((page - 1) * pageSize)
                     .Take(pageSize)
                     .ToListAsync();
-
-                if (!bookings.Any())
-                {
-                    return NotFound("No bookings found for the specified user.");
-                }
 
                 var bookingDtos = bookings.Select(b => new BookingDTO
                 {

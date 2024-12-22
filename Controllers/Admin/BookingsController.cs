@@ -40,9 +40,6 @@ namespace Hotel_Backend_API.Controllers
                     .Include(b => b.Room)
                     .FirstOrDefaultAsync(b => b.Id == bookingId);
 
-                if (booking == null)
-                    return NotFound($"No booking found with id [{bookingId}].");
-
                 var bookingDto = new BookingDTO
                 {
                     Id = bookingId,
@@ -81,9 +78,6 @@ namespace Hotel_Backend_API.Controllers
                     .Skip((page - 1) * pageSize)
                     .Take(pageSize)
                     .ToListAsync();
-
-                if (bookings == null || !bookings.Any())
-                    return NotFound("No bookings found for the specified hotel.");
 
                 var bookingDtos = bookings.Select(b => new BookingDTO
                 {
@@ -130,8 +124,6 @@ namespace Hotel_Backend_API.Controllers
                     .Take(pageSize)
                     .ToListAsync();
 
-                if (bookings == null || !bookings.Any())
-                    return NotFound("No bookings found for the specified user in the specified hotel.");
                 var bookingDtos = bookings.Select(b => new BookingDTO
                 {Id = b.Id,
                     GuestName = b.Guest.Name,
@@ -193,8 +185,6 @@ namespace Hotel_Backend_API.Controllers
                     TotalPrice = b.TotalPrice
                 }).ToList();
 
-                if(!bookingDtos.Any()) 
-                    return NotFound();
 
                 var response = new
                 {

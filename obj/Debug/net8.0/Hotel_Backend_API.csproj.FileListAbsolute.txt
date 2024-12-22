@@ -125,9 +125,6 @@ C:\Users\Admin\OneDrive\CE-University X_X\First Semester 2024\Graduation Project
 C:\Users\Admin\OneDrive\CE-University X_X\First Semester 2024\Graduation Project (1)\Work\Hotel_Backend_API\bin\Debug\net8.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Users\Admin\OneDrive\CE-University X_X\First Semester 2024\Graduation Project (1)\Work\Hotel_Backend_API\bin\Debug\net8.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Users\Admin\OneDrive\CE-University X_X\First Semester 2024\Graduation Project (1)\Work\Hotel_Backend_API\bin\Debug\net8.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
-C:\Users\Admin\OneDrive\CE-University X_X\First Semester 2024\Graduation Project (1)\Work\Hotel_Backend_API\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
-C:\Users\Admin\OneDrive\CE-University X_X\First Semester 2024\Graduation Project (1)\Work\Hotel_Backend_API\bin\Debug\net8.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
-C:\Users\Admin\OneDrive\CE-University X_X\First Semester 2024\Graduation Project (1)\Work\Hotel_Backend_API\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
 C:\Users\Admin\OneDrive\CE-University X_X\First Semester 2024\Graduation Project (1)\Work\Hotel_Backend_API\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
 C:\Users\Admin\OneDrive\CE-University X_X\First Semester 2024\Graduation Project (1)\Work\Hotel_Backend_API\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\Admin\OneDrive\CE-University X_X\First Semester 2024\Graduation Project (1)\Work\Hotel_Backend_API\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
@@ -153,3 +150,12 @@ C:\Users\Admin\OneDrive\CE-University X_X\First Semester 2024\Graduation Project
 C:\Users\Admin\OneDrive\CE-University X_X\First Semester 2024\Graduation Project (1)\Work\Hotel_Backend_API\obj\Debug\net8.0\Hotel_Backend_API.genruntimeconfig.cache
 C:\Users\Admin\OneDrive\CE-University X_X\First Semester 2024\Graduation Project (1)\Work\Hotel_Backend_API\obj\Debug\net8.0\ref\Hotel_Backend_API.dll
 C:\Users\Admin\OneDrive\CE-University X_X\First Semester 2024\Graduation Project (1)\Work\Hotel_Backend_API\obj\Debug\net8.0\Hotel_Backend_API.sourcelink.json
+C:\Users\Admin\OneDrive\CE-University X_X\First Semester 2024\Graduation Project (1)\Work\Hotel_Backend_API\bin\Debug\net8.0\EPPlus.dll
+C:\Users\Admin\OneDrive\CE-University X_X\First Semester 2024\Graduation Project (1)\Work\Hotel_Backend_API\bin\Debug\net8.0\EPPlus.Interfaces.dll
+C:\Users\Admin\OneDrive\CE-University X_X\First Semester 2024\Graduation Project (1)\Work\Hotel_Backend_API\bin\Debug\net8.0\EPPlus.System.Drawing.dll
+C:\Users\Admin\OneDrive\CE-University X_X\First Semester 2024\Graduation Project (1)\Work\Hotel_Backend_API\bin\Debug\net8.0\Microsoft.Extensions.Configuration.FileExtensions.dll
+C:\Users\Admin\OneDrive\CE-University X_X\First Semester 2024\Graduation Project (1)\Work\Hotel_Backend_API\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Json.dll
+C:\Users\Admin\OneDrive\CE-University X_X\First Semester 2024\Graduation Project (1)\Work\Hotel_Backend_API\bin\Debug\net8.0\Microsoft.IO.RecyclableMemoryStream.dll
+C:\Users\Admin\OneDrive\CE-University X_X\First Semester 2024\Graduation Project (1)\Work\Hotel_Backend_API\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
+C:\Users\Admin\OneDrive\CE-University X_X\First Semester 2024\Graduation Project (1)\Work\Hotel_Backend_API\bin\Debug\net8.0\runtimes\win\lib\net8.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\Admin\OneDrive\CE-University X_X\First Semester 2024\Graduation Project (1)\Work\Hotel_Backend_API\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll

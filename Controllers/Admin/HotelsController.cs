@@ -54,9 +54,6 @@ namespace Hotel_Backend_API.Controllers
                     .Take(pageSize)
                     .ToListAsync();
 
-                if (!hotels.Any())
-                    return NotFound("No hotels found.");
-
                 var response = new
                 {
                     TotalCount = totalHotels,
@@ -80,8 +77,6 @@ namespace Hotel_Backend_API.Controllers
             try
             {
                 var hotel = await hotelService.GetHotelByIdAsync(id);
-                if (hotel == null)
-                    return NotFound();
 
                 var response = hotel.Adapt<AddHotel>();
                 return Ok(response);
@@ -105,9 +100,6 @@ namespace Hotel_Backend_API.Controllers
                     .Skip((pageNumber - 1) * pageSize)
                     .Take(pageSize)
                     .ToListAsync();
-
-                if (!hotels.Any())
-                    return NotFound($"No hotels found that have [{num_stars}] stars.");
 
                 var response = new
                 {
@@ -141,9 +133,6 @@ namespace Hotel_Backend_API.Controllers
                     .Skip((pageNumber - 1) * pageSize)
                     .Take(pageSize)
                     .ToListAsync();
-
-                if (!hotels.Any())
-                    return NotFound($"No hotels found in the location [{input_address}].");
 
                 var response = new
                 {
@@ -245,6 +234,7 @@ namespace Hotel_Backend_API.Controllers
                 hotel.Stars = updatehotel.Stars;
                 hotel.Email = updatehotel.Email;
                 hotel.Tags = updatehotel.Tags;
+                hotel.profileIMG = updatehotel.profileIMG;
 
                 await dbContext.SaveChangesAsync();
                 var response = new
@@ -294,10 +284,7 @@ namespace Hotel_Backend_API.Controllers
             try
             {
                 var recommendations = await hotelService.GetHotelRecommendationsByTagsAsync(tagsSearchString, numOfRecommendations);
-                if (recommendations == null || !recommendations.Any())
-                {
-                    return NotFound("No recommendations found.");
-                }
+                
                 var response  = recommendations.Adapt<IEnumerable<AddHotel>>();
 
                 return Ok(response);

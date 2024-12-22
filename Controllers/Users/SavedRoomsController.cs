@@ -8,7 +8,7 @@ using System.Security.Claims;
 
 namespace Hotel_Backend_API.Controllers.Users
 {
-    [Route("api/[controller]")]
+    [Route("Normal/[controller]")]
     [ApiController]
     public class SavedRoomsController : ControllerBase
     {

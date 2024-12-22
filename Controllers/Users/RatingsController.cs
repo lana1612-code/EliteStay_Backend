@@ -75,11 +75,6 @@ namespace Hotel_Backend_API.Controllers.Users
                 .OrderByDescending(r => r.RatedAt)
                 .ToListAsync();
 
-            if (!ratings.Any())
-            {
-                return NotFound("No ratings found.");
-            }
-
             List<RatingDTO> ratingdto = new List<RatingDTO>();
 
             foreach (var rating in ratings)
@@ -114,11 +109,6 @@ namespace Hotel_Backend_API.Controllers.Users
                 .OrderByDescending(r => r.RatedAt)
                 .ToListAsync();
 
-            if (!ratings.Any())
-            {
-                return NotFound($"No ratings found for hotel with ID [{hotelId}].");
-            }
-
             List<returnRatingDTO> ratingdto = new List<returnRatingDTO>();
 
             foreach (var rating in ratings)
@@ -147,8 +137,9 @@ namespace Hotel_Backend_API.Controllers.Users
         [HttpGet("Get_Trend_Hotel")]
         public async Task<ActionResult> GetTrend()
         {
-            // var Trends = await dbContext.Ratings
-            var Trends = await dbContext.Recommendeds
+            //   var Trends = await dbContext.Recommendeds
+
+            var Trends = await dbContext.Ratings
                              .GroupBy(r => r.HotelId)
                              .Select(group => new
                              {
@@ -161,10 +152,6 @@ namespace Hotel_Backend_API.Controllers.Users
                              .OrderByDescending(r => r.MeanRating)
                              .ToListAsync();
 
-            if (!Trends.Any())
-            {
-                return NotFound("No Trends found.");
-            }
             var hotelDetails = new List<object>();
 
             foreach (var trend in Trends)

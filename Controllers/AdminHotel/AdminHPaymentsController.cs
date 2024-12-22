@@ -37,9 +37,6 @@ namespace Hotel_Backend_API.Controllers
                                           })
                                           .FirstOrDefaultAsync();
 
-            if (payment == null)
-                return NotFound("Payment not found.");
-
             return Ok(payment);
         }
 
@@ -67,9 +64,6 @@ namespace Hotel_Backend_API.Controllers
                     StatusDone = "Yes",
                 })
                 .ToListAsync();
-
-            if (!payments.Any())
-                return BadRequest("No payments found for this hotel.");
 
             var response = new
             {

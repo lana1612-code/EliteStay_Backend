@@ -11,6 +11,7 @@ namespace Hotel_Backend_API.DTO.Hotel
             RuleFor(hotel => hotel.Email).NotNull().WithMessage("the Email should not empty");
             RuleFor(hotel => hotel.Stars).NotNull().WithMessage("the Stars should not empty");
             RuleFor(hotel => hotel.Address).NotNull().WithMessage("the Address should not empty");
+            RuleFor(hotel => hotel.profileIMG).NotNull().WithMessage("the profile image is required");
 
             RuleFor(x => x.Stars)
              .InclusiveBetween(1, 4);

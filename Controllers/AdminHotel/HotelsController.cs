@@ -33,8 +33,6 @@ namespace Hotel_Backend_API.Controllers
             try
             {
                 var hotel = await hotelService.GetHotelByIdAsync(id);
-                if (hotel == null)
-                    return NotFound();
 
                 var response = hotel.Adapt<AddHotel>();
                 return Ok(response);

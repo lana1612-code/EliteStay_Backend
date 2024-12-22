@@ -39,11 +39,6 @@ namespace Hotel_Backend_API.Controllers
                 .OrderByDescending(r => r.RatedAt)
                 .ToListAsync();
 
-            if (!ratings.Any())
-            {
-                return NotFound($"No ratings found for hotel with ID [{hotelId}].");
-            }
-
             List<returnRatingDTO> ratingdto = new List<returnRatingDTO>();
 
             foreach (var rating in ratings)

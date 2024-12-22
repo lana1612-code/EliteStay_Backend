@@ -40,10 +40,6 @@ namespace Hotel_Backend_API.Controllers
                   .Where(c => c.HotelId == hotelId)
                   .ToListAsync();
 
-            if (complaints == null || !complaints.Any())
-            {
-                return NotFound("No complaints found for this hotel.");
-            }
             List<ReturnComplainDTO> returnComplainDto = new List<ReturnComplainDTO>();
             foreach(var Complain in complaints)
             {

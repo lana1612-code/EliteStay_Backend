@@ -46,9 +46,6 @@ namespace Hotel_Backend_API.Controllers
                                          })
                                          .ToListAsync();
 
-            if (!guests.Any())
-                return BadRequest("No guests found for the specified hotel.");
-
             var response = new
             {
                 TotalCount = totalGuests,

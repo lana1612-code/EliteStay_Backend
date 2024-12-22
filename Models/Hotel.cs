@@ -9,6 +9,7 @@ namespace Hotel_Backend_API.Models
         public string Address { get; set; }
         [Range(1, 4)]
         public int Stars { get; set; }
+        public string profileIMG { get; set; }
         public string Tags { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }

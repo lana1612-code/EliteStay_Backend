@@ -1,23 +1,28 @@
 ﻿using Hotel_Backend_API.Data;
 using Hotel_Backend_API.DTO.Comment;
+using Hotel_Backend_API.DTO.Complain;
 using Hotel_Backend_API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace Hotel_Backend_API.Controllers.Users
 {
-    [Route("api/[controller]")]
+    [Route("Normal/[controller]")]
     [ApiController]
     public class CommentsController : ControllerBase
     {
         private readonly ApplicationDbContext dbContext;
+        private readonly UserManager<AppUser> userManager;
 
-        public CommentsController(ApplicationDbContext dbContext)
+        public CommentsController(ApplicationDbContext dbContext,
+                         UserManager<AppUser> userManager)
         {
             this.dbContext = dbContext;
+            this.userManager = userManager;
         }
 
 
@@ -62,20 +67,24 @@ namespace Hotel_Backend_API.Controllers.Users
                 .Where(c => c.HotelId == hotelId)
                 .OrderByDescending(c => c.CreatedAt)
                 .ToListAsync();
-
-            if (!comments.Any())
+        
+            List<GetCommentDTO> returnComment = new List<GetCommentDTO>();
+            foreach (var comment in comments)
             {
-                return NotFound($"No comments found for hotel with ID [{hotelId}].");
+                var user = await userManager.FindByIdAsync(comment.UserId);
+
+                var responseDto = new GetCommentDTO
+                {
+                    Id = comment.Id,
+                    HotelId = comment.HotelId,
+                    username =user.UserName,
+                    Content = comment.Content,
+                    CreatedAt = comment.CreatedAt.ToString("yyyy-MM-dd  HH:mm:ss")
+                };
+                returnComment.Add(responseDto);
             }
-            var responseDto = comments.Select(c => new GetCommentDTO
-            {
-                Id = c.Id,
-                HotelId = c.HotelId,
-                Content = c.Content,
-                CreatedAt = c.CreatedAt.ToString("yyyy-MM-dd  HH:mm:ss")
-            }).ToList();
 
-            return Ok(responseDto);
+            return Ok(returnComment);
         }
 
 

@@ -43,9 +43,6 @@ namespace Hotel_Backend_API.Controllers
                                        })
                                        .FirstOrDefaultAsync();
 
-            if (room == null)
-                return NotFound("Room not found.");
-
             return Ok(room);
         }
 
@@ -75,9 +72,6 @@ namespace Hotel_Backend_API.Controllers
                                            ImageURL = r.RoomType.ImageURL
                                        })
                                        .ToListAsync();
-
-            if (!rooms.Any())
-                return BadRequest("No rooms found for the specified hotel.");
 
             var response = new
             {
@@ -117,9 +111,6 @@ namespace Hotel_Backend_API.Controllers
                                        })
                                        .ToListAsync();
 
-            if (!rooms.Any())
-                return BadRequest("No available rooms found for the specified hotel.");
-
             var response = new
             {
                 TotalCount = totalRooms,
@@ -157,9 +148,6 @@ namespace Hotel_Backend_API.Controllers
                                            ImageURL = r.RoomType.ImageURL
                                        })
                                        .ToListAsync();
-
-            if (!rooms.Any())
-                return BadRequest("No Occupied rooms found for the specified hotel.");
 
             var response = new
             {
@@ -202,9 +190,6 @@ namespace Hotel_Backend_API.Controllers
                         ImageURL = r.RoomType.ImageURL
                     })
                     .ToListAsync();
-
-                if (!rooms.Any())
-                    return NotFound($"No rooms found with capacity [{capacity}].");
 
                 var response = new
                 {

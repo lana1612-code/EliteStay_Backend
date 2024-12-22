@@ -38,9 +38,6 @@ namespace Hotel_Backend_API.Controllers
                                            })
                                            .ToListAsync();
 
-            if (!roomTypes.Any())
-                return BadRequest("No Room types found.");
-
             var response = new
             {
                 TotalCount = totalRoomTypes,
@@ -70,9 +67,6 @@ namespace Hotel_Backend_API.Controllers
                                            })
                                            .FirstOrDefaultAsync();
 
-            if (roomType == null)
-                return NotFound("Room type not found.");
-
             return Ok(roomType);
         }
 
@@ -82,12 +76,17 @@ namespace Hotel_Backend_API.Controllers
         {
             try
             {
+                var roomTypeIds = await dbContext.Rooms
+                    .Where(r => r.HotelId == hotelId)
+                    .Select(r => r.RoomTypeId)
+                    .ToListAsync();
+              //  return Ok(roomTypeIds);
                 var totalRoomTypes = await dbContext.RoomTypes
-                    .Where(rt => dbContext.Rooms.Any(r => r.RoomTypeId == rt.Id && r.HotelId == hotelId))
+                    .Where(rt => roomTypeIds.Contains(rt.Id))
                     .CountAsync();
 
                 var roomTypes = await dbContext.RoomTypes
-                    .Where(rt => dbContext.Rooms.Any(r => r.RoomTypeId == rt.Id && r.HotelId == hotelId))
+                    .Where(rt => roomTypeIds.Contains(rt.Id))
                     .Skip((pageNumber - 1) * pageSize)
                     .Take(pageSize)
                     .Select(rt => new ReturnRoomTypeDTO
@@ -101,9 +100,6 @@ namespace Hotel_Backend_API.Controllers
                     })
                     .ToListAsync();
 
-                if (!roomTypes.Any())
-                    return NotFound($"No room types found for hotel with ID [{hotelId}].");
-
                 var response = new
                 {
                     TotalCount = totalRoomTypes,
@@ -114,6 +110,7 @@ namespace Hotel_Backend_API.Controllers
                 };
 
                 return Ok(response);
+
             }
             catch (Exception ex)
             {
@@ -121,7 +118,7 @@ namespace Hotel_Backend_API.Controllers
             }
         }
 
-        
+        /*
         [HttpPost()]
         public async Task<IActionResult> AddRoomType([FromForm] RoomTypeDTO newRoomTypeDto)
         {
@@ -129,7 +126,7 @@ namespace Hotel_Backend_API.Controllers
             {
                 if (newRoomTypeDto == null)
                     return BadRequest("Room type data is required.");
-                /*******************************************************/
+                
                 if (newRoomTypeDto.ImageURL == null || newRoomTypeDto.ImageURL.Length == 0)
                 {
                     return BadRequest("No image provided.");
@@ -150,7 +147,7 @@ namespace Hotel_Backend_API.Controllers
                 {
                     await newRoomTypeDto.ImageURL.CopyToAsync(stream);
                 }
-                /*******************************************************/
+                
 
 
                 var newRoomType = new RoomType
@@ -190,10 +187,56 @@ namespace Hotel_Backend_API.Controllers
             }
 
         }
+        */
 
-        
+        [HttpPost()]
+        public async Task<IActionResult> AddRoomType(RoomTypeDTO newRoomTypeDto)
+        {
+            try
+            {
+                if (newRoomTypeDto == null)
+                    return BadRequest("Room type data is required.");
+
+                var newRoomType = new RoomType
+                {
+                    Name = newRoomTypeDto.Name,
+                    PricePerNight = newRoomTypeDto.PricePerNight,
+                    Capacity = newRoomTypeDto.Capacity,
+                    Description = newRoomTypeDto.Description,
+                    ImageURL = newRoomTypeDto.ImageURL
+                };
+
+                dbContext.RoomTypes.Add(newRoomType);
+                await dbContext.SaveChangesAsync();
+
+                var roomTypeDto = new ReturnRoomTypeDTO
+                {
+                    Id = newRoomType.Id,
+                    Name = newRoomType.Name,
+                    PricePerNight = newRoomType.PricePerNight,
+                    Capacity = newRoomType.Capacity,
+                    Description = newRoomType.Description,
+                    ImageURL = newRoomType.ImageURL
+                };
+
+                var response = new
+                {
+                    Message = "Add Room Type Success",
+                    Data = roomTypeDto
+                };
+
+                return CreatedAtAction(nameof(GetAllRoomTypes), new { id = newRoomType.Id }, response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while adding the room type.");
+            }
+
+        }
+
+
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateRoomType(int id, [FromForm] RoomTypeDTO updateRoomTypeDto)
+        public async Task<IActionResult> UpdateRoomType(int id, RoomTypeDTO updateRoomTypeDto)
 
         {
             try
@@ -205,36 +248,11 @@ namespace Hotel_Backend_API.Controllers
                 if (roomType == null)
                     return NotFound($"Room type with id [{id}] not found.");
 
-                /*******************************************************/
-                if (updateRoomTypeDto.ImageURL == null || updateRoomTypeDto.ImageURL.Length == 0)
-                {
-                    return BadRequest("No image provided.");
-                }
-
-                if (!updateRoomTypeDto.ImageURL.ContentType.Contains("image"))
-                {
-                    return BadRequest("Invalid image format.");
-                }
-
-                string rootFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "images");
-                Directory.CreateDirectory(rootFolderPath);
-
-                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(updateRoomTypeDto.ImageURL.FileName);
-                string filePath = Path.Combine(rootFolderPath, fileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await updateRoomTypeDto.ImageURL.CopyToAsync(stream);
-                }
-
-                /*******************************************************/
-
-
                 roomType.Name = updateRoomTypeDto.Name;
                 roomType.PricePerNight = updateRoomTypeDto.PricePerNight;
                 roomType.Capacity = updateRoomTypeDto.Capacity;
                 roomType.Description = updateRoomTypeDto.Description;
-                roomType.ImageURL = filePath;
+                roomType.ImageURL = updateRoomTypeDto.ImageURL;
 
                 dbContext.RoomTypes.Update(roomType);
                 await dbContext.SaveChangesAsync();

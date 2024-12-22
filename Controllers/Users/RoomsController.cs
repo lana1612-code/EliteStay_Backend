@@ -45,9 +45,6 @@ namespace Hotel_Backend_API.Controllers.Users
                                        })
                                        .ToListAsync();
 
-            if (!rooms.Any())
-                return BadRequest("No rooms found.");
-
             var response = new
             {
                 TotalCount = totalRooms,
@@ -86,9 +83,6 @@ namespace Hotel_Backend_API.Controllers.Users
                                            ImageURL = r.RoomType.ImageURL
                                        })
                                        .ToListAsync();
-
-            if (!rooms.Any())
-                return BadRequest("No available rooms found.");
 
             var response = new
             {
@@ -131,9 +125,6 @@ namespace Hotel_Backend_API.Controllers.Users
                         ImageURL = r.RoomType.ImageURL
                     })
                     .ToListAsync();
-
-                if (!rooms.Any())
-                    return NotFound($"No rooms found with capacity [{capacity}].");
 
                 var response = new
                 {
