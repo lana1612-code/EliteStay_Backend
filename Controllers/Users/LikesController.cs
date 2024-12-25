@@ -68,7 +68,7 @@ namespace Hotel_Backend_API.Controllers.Users
                 RoomTypeName = l.Room.RoomType.Name,
                 l.Room.RoomType.Description,
                 l.Room.RoomType.PricePerNight
-            }).ToList();
+            }).Distinct().ToList();
 
             return Ok(likeDTOs);
 

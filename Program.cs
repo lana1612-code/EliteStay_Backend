@@ -47,6 +47,8 @@ namespace Hotel_Backend_API
             builder.Services.AddScoped<HotelService>();
             builder.Services.AddScoped<totalPriceService>();
             builder.Services.AddScoped<RoomService>();
+            builder.Services.AddScoped<LikeRecommendedService>();
+
 
             builder.Services.AddAuthentication(options =>
             {

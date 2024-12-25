@@ -217,6 +217,19 @@ namespace Hotel_Backend_API.Controllers
                 if (hotel == null)
                     return NotFound($"No hotel found with id [{id}]");
 
+                if (dbContext.Hotels.Where(h => h.Id != id).AsEnumerable()
+                   .Any(h => h.Phone.Equals(updatehotel.Phone, StringComparison.OrdinalIgnoreCase)))
+                {
+                    return BadRequest("This phone number is already in use.");
+                }
+           
+           
+                if (dbContext.Hotels.Where(h => h.Id != id).AsEnumerable()
+                   .Any(h => h.Email.Equals(updatehotel.Email, StringComparison.OrdinalIgnoreCase)))
+                {
+                    return BadRequest("This email address is already in use.");
+                }
+                /*
                 if (dbContext.Hotels.AsEnumerable()
                     .Any(h => h.Email.Equals(updatehotel.Email, StringComparison.OrdinalIgnoreCase)))
                 {
@@ -227,6 +240,7 @@ namespace Hotel_Backend_API.Controllers
                 {
                     return BadRequest("This phone number is already in use.");
                 }
+                */
 
                 hotel.Name = updatehotel.Name;
                 hotel.Address = updatehotel.Address;

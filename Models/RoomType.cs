@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Hotel_Backend_API.Models
 {
@@ -12,6 +13,7 @@ namespace Hotel_Backend_API.Models
         public int Capacity { get; set; }
         public string? Description { get; set; }
         public string? ImageURL { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Room> Room { get; set; }
     }
 }
