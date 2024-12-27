@@ -57,6 +57,7 @@ namespace Hotel_Backend_API.Controllers
                 {
                     Id = rating.Id,
                     UserName = user.UserName,
+                    userImg = user.imgUser,
                     hotelName = hotel.Name,
                     RatingValue = rating.RatingValue
                 });

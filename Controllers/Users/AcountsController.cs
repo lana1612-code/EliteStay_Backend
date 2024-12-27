@@ -151,5 +151,25 @@ namespace Hotel_Backend_API.Controllers
             }
         }
 
+
+        [HttpGet("GetProfileImg")]
+        public async Task<IActionResult> GetProfileImg()
+        {
+            var userClaims = User.Claims;
+            var userIdClaim = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (userIdClaim == null)
+            {
+                return Unauthorized("User ID not found in token.");
+            }
+
+            var user = await userManager.FindByIdAsync(userIdClaim);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            return Ok(user.imgUser);
+        }
+
     }
 }

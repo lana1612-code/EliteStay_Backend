@@ -49,6 +49,7 @@ namespace Hotel_Backend_API.Controllers
                     Id = Complain.Id,
                     EmailUser = user.Email,
                     NameUser = user.UserName,
+                    imgUser = user.imgUser,
                     Content = Complain.Content,
                     CreatedAt = Complain.CreatedAt,
                 };

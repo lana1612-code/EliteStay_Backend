@@ -4,6 +4,7 @@
     {
         public int Id { get; set; }
         public string UserName { get; set; }
+        public string? userImg { get; set; }
         public string hotelName { get; set; }
         public double RatingValue { get; set; }
     }

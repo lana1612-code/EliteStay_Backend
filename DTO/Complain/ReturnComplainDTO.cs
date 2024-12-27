@@ -4,6 +4,7 @@
     {
         public int Id { get; set; }
         public string NameUser { get; set; }
+        public string imgUser { get; set; }
         public string hotelName { get; set; }
         public string EmailUser { get; set; }
         public string Content { get; set; }

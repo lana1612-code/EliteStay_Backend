@@ -114,11 +114,13 @@ namespace Hotel_Backend_API.Controllers
             {
                 var totalBookings = await dbContext.Bookings
                     .Include(b => b.Room)
+                    .ThenInclude(r => r.Hotel)
                     .CountAsync(b => b.Guest.Id == userId && b.Room.HotelId == hotelId);
 
                 var bookings = await dbContext.Bookings
                     .Include(b => b.Guest)
                     .Include(b => b.Room)
+                    .ThenInclude(r => r.Hotel)
                     .Where(b => b.Guest.Id == userId && b.Room.HotelId == hotelId)
                     .Skip((page - 1) * pageSize)
                     .Take(pageSize)
@@ -127,6 +129,8 @@ namespace Hotel_Backend_API.Controllers
                 var bookingDtos = bookings.Select(b => new BookingDTO
                 {Id = b.Id,
                     GuestName = b.Guest.Name,
+                    GuestImg = b.Guest.imgUser,
+                    hotelName = b.Room.Hotel.Name,
                     RoomNumber = b.Room.RoomNumber,
                     CheckinDate = b.CheckinDate.ToString("yyyy-MM-dd"),
                     CheckoutDate = b.CheckoutDate.ToString("yyyy-MM-dd"),
@@ -150,7 +154,7 @@ namespace Hotel_Backend_API.Controllers
             }
         }
 
-
+        /**/
         [HttpGet("GetAll/date_filtering/{hotelId}")]
         public async Task<IActionResult> GetAllBookings(int hotelId, int page = 1, int pageSize = 10, string startDate = null, string endDate = null)   
         {

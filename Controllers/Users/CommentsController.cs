@@ -78,6 +78,7 @@ namespace Hotel_Backend_API.Controllers.Users
                     Id = comment.Id,
                     HotelId = comment.HotelId,
                     username =user.UserName,
+                    userImg = user.imgUser,
                     Content = comment.Content,
                     CreatedAt = comment.CreatedAt.ToString("yyyy-MM-dd  HH:mm:ss")
                 };
