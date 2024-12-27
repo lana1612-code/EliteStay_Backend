@@ -94,6 +94,9 @@ namespace Hotel_Backend_API.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<string>("imgUser")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -215,6 +218,9 @@ namespace Hotel_Backend_API.Migrations
 
                     b.Property<string>("Phone")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("imgUser")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -503,6 +509,23 @@ namespace Hotel_Backend_API.Migrations
                     b.HasIndex("NotificationId");
 
                     b.ToTable("UserNotifications");
+                });
+
+            modelBuilder.Entity("Hotel_Backend_API.Models.fileExcel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("path")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("fileExcels");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

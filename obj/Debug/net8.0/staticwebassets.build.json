@@ -1,11 +1,39 @@
 {
   "Version": 1,
-  "Hash": "32HVcBZ4aq8VnIpFczXHg2h+gqHoYXl7CVIX+5hhFKA=",
+  "Hash": "jAQnjV4BJZavhUpmet2sbVyVN6YY+7jJCteHaih257I=",
   "Source": "Hotel_Backend_API",
   "BasePath": "_content/Hotel_Backend_API",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "Hotel_Backend_API\\wwwroot",
+      "Source": "Hotel_Backend_API",
+      "ContentRoot": "C:\\Users\\Admin\\OneDrive\\CE-University X_X\\First Semester 2024\\Graduation Project (1)\\Work\\Hotel_Backend_API\\wwwroot\\",
+      "BasePath": "_content/Hotel_Backend_API",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\Admin\\OneDrive\\CE-University X_X\\First Semester 2024\\Graduation Project (1)\\Work\\Hotel_Backend_API\\wwwroot\\images\\profiles\\70cec748-bacb-4cca-b6d2-3f509324fe03.jpg",
+      "SourceId": "Hotel_Backend_API",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Admin\\OneDrive\\CE-University X_X\\First Semester 2024\\Graduation Project (1)\\Work\\Hotel_Backend_API\\wwwroot\\",
+      "BasePath": "_content/Hotel_Backend_API",
+      "RelativePath": "images/profiles/70cec748-bacb-4cca-b6d2-3f509324fe03.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\profiles\\70cec748-bacb-4cca-b6d2-3f509324fe03.jpg"
+    }
+  ]
 }

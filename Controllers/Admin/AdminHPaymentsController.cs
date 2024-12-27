@@ -33,6 +33,7 @@ namespace Hotel_Backend_API.Controllers
                                               Amount = p.Amount,
                                               PaymentDate = p.PaymentDate.ToString("yyyy-MM-dd"),
                                               StatusDone = "Yes",
+                                              hotelName = p.Booking.Room.Hotel.Name
                                           })
                                           .FirstOrDefaultAsync();
 
@@ -40,29 +41,31 @@ namespace Hotel_Backend_API.Controllers
         }
 
 
-        [HttpGet("GetAll/{hotelId}")]
-        public async Task<IActionResult> GetPaymentsByHotelId(int hotelId, int pageNumber = 1, int pageSize = 10)
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetPaymentsByHotelId(int pageNumber = 1, int pageSize = 10)
         {
             var totalPayments = await dbContext.Payments
-                .Include(p => p.Booking)
-                .ThenInclude(b => b.Room)
-                .Where(p => p.Booking.Room.HotelId == hotelId)
-                .CountAsync();
+                  .Include(p => p.Booking)
+                  .ThenInclude(b => b.Room)
+                  .ThenInclude(r => r.Hotel)
+                  .CountAsync();
 
             var payments = await dbContext.Payments
-                .Include(p => p.Booking)
-                .ThenInclude(b => b.Room)
-                .Where(p => p.Booking.Room.HotelId == hotelId)
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
-                .Select(p => new PaymentDTO
-                {Id = p.Id,
-                    BookingId = p.BookingId,
-                    Amount = p.Amount,
-                    PaymentDate = p.PaymentDate.ToString("yyyy-MM-dd"),
-                    StatusDone = "Yes",
-                })
-                .ToListAsync();
+                  .Include(p => p.Booking)
+                  .ThenInclude(b => b.Room)
+                  .ThenInclude(r => r.Hotel)
+                  .Skip((pageNumber - 1) * pageSize)
+                  .Take(pageSize)
+                  .Select(p => new PaymentDTO
+                  {
+                      Id = p.Id,
+                      BookingId = p.BookingId,
+                      Amount = p.Amount,
+                      PaymentDate = p.PaymentDate.ToString("yyyy-MM-dd"),
+                      StatusDone = p.StatusDone,
+                      hotelName = p.Booking.Room.Hotel.Name
+                  })
+                  .ToListAsync();
 
             var response = new
             {

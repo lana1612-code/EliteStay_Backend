@@ -60,7 +60,7 @@ namespace Hotel_Backend_API.Controllers
                     PageSize = pageSize,
                     CurrentPage = pageNumber,
                     TotalPages = (int)Math.Ceiling(totalHotels / (double)pageSize),
-                    Data = hotels.Adapt<IEnumerable<AddHotel>>() // Assuming you have a mapping setup  
+                    Data = hotels.Adapt<IEnumerable<AddHotel>>()  
                 };
 
                 return Ok(response);

@@ -6,7 +6,7 @@ namespace Hotel_Backend_API.DTO.RoomType
     {
         public int Id { get; set; }
         public string Name { get; set; }
-
+        public string hotelName { get; set; }
         [Column(TypeName = "decimal(10,2)")]
         public decimal PricePerNight { get; set; }
         public int Capacity { get; set; }

@@ -27,8 +27,8 @@ namespace Hotel_Backend_API.Controllers
         }
 
         
-        [HttpGet("GetAll/{hotelId}")]
-        public async Task<IActionResult> GetComplaints(int hotelId)
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetComplaints()
         {
             var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             if (userIdClaim == null)
@@ -37,18 +37,21 @@ namespace Hotel_Backend_API.Controllers
             }
 
             var complaints = await dbContext.Complaints
-                  .Where(c => c.HotelId == hotelId)
                   .ToListAsync();
 
             List<ReturnComplainDTO> returnComplainDto = new List<ReturnComplainDTO>();
             foreach(var Complain in complaints)
             {
                 var user = await userManager.FindByIdAsync(Complain.UserId);
+
+                var hotelName = await dbContext.Hotels.FindAsync(Complain.HotelId);
+
                 var complaindto = new ReturnComplainDTO 
                 {
                     Id = Complain.Id,
                     EmailUser = user.Email,
                     NameUser = user.UserName,
+                    hotelName = hotelName.Name,
                     Content = Complain.Content,
                     CreatedAt = Complain.CreatedAt,
                 };

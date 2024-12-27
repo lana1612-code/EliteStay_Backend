@@ -38,5 +38,7 @@ namespace Hotel_Backend_API.Data
         public DbSet<Recommended> Recommendeds { get; set; }
 
 
+
+
     }
 }

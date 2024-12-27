@@ -48,17 +48,16 @@ namespace Hotel_Backend_API.Controllers
         }
 
 
-        [HttpGet("GetAll/{hotelId}")]
-        public async Task<IActionResult> GetAllRoomsInHotel(int hotelId, int pageNumber = 1, int pageSize = 10)
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAllRoomsInHotel( int pageNumber = 1, int pageSize = 10)
         {
             var totalRooms = await dbContext.Rooms
-                                             .Where(r => r.HotelId == hotelId)
+                                             .Include(r => r.Hotel)
                                              .CountAsync();
 
             var rooms = await dbContext.Rooms
                                        .Include(r => r.Hotel)
                                        .Include(r => r.RoomType)
-                                       .Where(r => r.HotelId == hotelId)
                                        .Skip((pageNumber - 1) * pageSize)
                                        .Take(pageSize)
                                        .Select(r => new RoomDTO

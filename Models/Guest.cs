@@ -9,6 +9,7 @@ namespace Hotel_Backend_API.Models
         public string Phone { get; set; }
         [EmailAddress]
         public string Email { get; set; }
+        public string? imgUser { get; set; }
         public virtual ICollection<Booking> Booking { get; set; }
     }
 }

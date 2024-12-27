@@ -25,18 +25,25 @@ namespace Hotel_Backend_API.Controllers
         {
             var totalRoomTypes = await dbContext.RoomTypes.CountAsync();
             var roomTypes = await dbContext.RoomTypes
-                                           .Skip((pageNumber - 1) * pageSize)
-                                           .Take(pageSize)
-                                           .Select(rt => new ReturnRoomTypeDTO
-                                           {
-                                               Id = rt.Id,
-                                               Name = rt.Name,
-                                               PricePerNight = rt.PricePerNight,
-                                               Capacity = rt.Capacity,
-                                               Description = rt.Description,
-                                               ImageURL = rt.ImageURL
-                                           })
-                                           .ToListAsync();
+                .Join(
+                      dbContext.Rooms, rt => rt.Id, r => r.RoomTypeId, (rt, r) => 
+                      new { RoomType = rt, Room = r })
+                .Join(
+                      dbContext.Hotels, rr => rr.Room.HotelId, h => h.Id, (rr, h) =>
+                      new { rr.RoomType, Hotel = h })
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .Select(rh => new ReturnRoomTypeDTO
+                {
+                    Id = rh.RoomType.Id,
+                    Name = rh.RoomType.Name,
+                    hotelName = rh.Hotel.Name,
+                    PricePerNight = rh.RoomType.PricePerNight,
+                    Capacity = rh.RoomType.Capacity,
+                    Description = rh.RoomType.Description,
+                    ImageURL = rh.RoomType.ImageURL
+                })
+                .ToListAsync();
 
             var response = new
             {
@@ -55,17 +62,25 @@ namespace Hotel_Backend_API.Controllers
         public async Task<IActionResult> GetRoomTypeById(int id)
         {
             var roomType = await dbContext.RoomTypes
-                                           .Where(rt => rt.Id == id)
-                                           .Select(rt => new ReturnRoomTypeDTO
-                                           {
-                                               Id = rt.Id,
-                                               Name = rt.Name,
-                                               PricePerNight = rt.PricePerNight,
-                                               Capacity = rt.Capacity,
-                                               Description = rt.Description,
-                                               ImageURL = rt.ImageURL
-                                           })
-                                           .FirstOrDefaultAsync();
+                                   .Join(
+                                       dbContext.Rooms, rt => rt.Id, r => r.RoomTypeId, (rt, r) => 
+                                       new { RoomType = rt, Room = r })
+                                   .Join(
+                                       dbContext.Hotels, rr => rr.Room.HotelId, h => h.Id, (rr, h) =>
+                                       new { rr.RoomType, Hotel = h })
+                                   .Where(rh => rh.RoomType.Id == id)
+                                   .Select(rh => new ReturnRoomTypeDTO
+                                   {
+                                       Id = rh.RoomType.Id,
+                                       Name = rh.RoomType.Name,
+                                       hotelName = rh.Hotel.Name,
+                                       PricePerNight = rh.RoomType.PricePerNight,
+                                       Capacity = rh.RoomType.Capacity,
+                                       Description = rh.RoomType.Description,
+                                       ImageURL = rh.RoomType.ImageURL
+                                   })
+                                   .FirstOrDefaultAsync();
+
 
             return Ok(roomType);
         }

@@ -42,7 +42,8 @@ namespace Hotel_Backend_API.Controllers
                                          {Id = g.Id,
                                              Name = g.Name,
                                              Email = g.Email,
-                                             Phone = g.Phone
+                                             Phone = g.Phone,
+                                             imgUser = g.imgUser
                                          })
                                          .ToListAsync();
 
@@ -70,7 +71,8 @@ namespace Hotel_Backend_API.Controllers
                                         {
                                             Name = g.Name,
                                             Email = g.Email,
-                                            Phone = g.Phone
+                                            Phone = g.Phone,
+                                            imgUser = g.imgUser
                                         })
                                         .ToListAsync();
 

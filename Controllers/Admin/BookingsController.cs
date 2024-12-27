@@ -38,6 +38,7 @@ namespace Hotel_Backend_API.Controllers
                 var booking = await dbContext.Bookings
                     .Include(b => b.Guest)
                     .Include(b => b.Room)
+                    .ThenInclude(r => r.Hotel)
                     .FirstOrDefaultAsync(b => b.Id == bookingId);
 
                 var bookingDto = new BookingDTO
@@ -47,7 +48,8 @@ namespace Hotel_Backend_API.Controllers
                     RoomNumber = booking.Room.RoomNumber,
                     CheckinDate = booking.CheckinDate.ToString("yyyy-MM-dd"),
                     CheckoutDate = booking.CheckoutDate.ToString("yyyy-MM-dd"),
-                    TotalPrice = booking.TotalPrice
+                    TotalPrice = booking.TotalPrice,
+                    hotelName = booking.Room.Hotel.Name
                 };
 
                 return Ok(bookingDto);
@@ -59,35 +61,33 @@ namespace Hotel_Backend_API.Controllers
         }
 
 
-        [HttpGet("GetAll/{hotelId}")]
-        public async Task<IActionResult> GetBookingsByHotelId(int hotelId, int page = 1, int pageSize = 10)
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetBookingsByHotelId( int page = 1, int pageSize = 10)
         {
             try
             {
-                var hotel = await dbContext.Hotels.FindAsync(hotelId);
-                if (hotel == null)
-                    return NotFound($"No hotel found with id [{hotelId}]");
-
                 var totalBookings = await dbContext.Bookings
-                    .CountAsync(b => b.Room.HotelId == hotelId);
+                    .Include(b => b.Room)
+                    .ThenInclude(r => r.Hotel)
+                    .CountAsync();
 
                 var bookings = await dbContext.Bookings
                     .Include(b => b.Guest)
                     .Include(b => b.Room)
-                    .Where(b => b.Room.HotelId == hotelId)
+                    .ThenInclude(r => r.Hotel)
                     .Skip((page - 1) * pageSize)
                     .Take(pageSize)
+                    .Select(b => new BookingDTO
+                    {
+                        Id = b.Id,
+                        GuestName = b.Guest.Name,
+                        RoomNumber = b.Room.RoomNumber,
+                        CheckinDate = b.CheckinDate.ToString("yyyy-MM-dd"),
+                        CheckoutDate = b.CheckoutDate.ToString("yyyy-MM-dd"),
+                        TotalPrice = b.TotalPrice,
+                        hotelName = b.Room.Hotel.Name 
+                    })
                     .ToListAsync();
-
-                var bookingDtos = bookings.Select(b => new BookingDTO
-                {
-                    Id = b.Id,
-                    GuestName = b.Guest.Name,
-                    RoomNumber = b.Room.RoomNumber,
-                    CheckinDate = b.CheckinDate.ToString("yyyy-MM-dd"),
-                    CheckoutDate = b.CheckoutDate.ToString("yyyy-MM-dd"),
-                    TotalPrice = b.TotalPrice
-                }).ToList();
 
                 var response = new
                 {
@@ -95,7 +95,7 @@ namespace Hotel_Backend_API.Controllers
                     PageSize = pageSize,
                     CurrentPage = page,
                     TotalPages = (int)Math.Ceiling(totalBookings / (double)pageSize),
-                    Data = bookingDtos
+                    Data = bookings
                 };
 
                 return Ok(response);

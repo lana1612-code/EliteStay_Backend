@@ -5,6 +5,7 @@
         public int Id { get; set; }
         public string NameHotel { get; set; }
         public string NameRoomType { get; set; }
+        public string hotelName { get; set; }
         public string RoomNumber { get; set; }
         public string Status { get; set; }
         public decimal PricePerNight { get; set; }

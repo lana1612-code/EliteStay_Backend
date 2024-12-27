@@ -31,11 +31,11 @@ namespace Hotel_Backend_API.Controllers
             this.hotelService = hotelService;
         }
 
-        [HttpGet("GetAll/{hotelId}")]
-        public async Task<IActionResult> GetRatingsForHotel(int hotelId)
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetRatingsForHotel()
         {
             var ratings = await dbContext.Ratings
-                .Where(r => r.HotelId == hotelId)
+                .Include(r => r.Hotel)
                 .OrderByDescending(r => r.RatedAt)
                 .ToListAsync();
 
@@ -57,6 +57,7 @@ namespace Hotel_Backend_API.Controllers
                 {
                     Id = rating.Id,
                     UserName = user.UserName,
+                    hotelName = hotel.Name,
                     RatingValue = rating.RatingValue
                 });
             }

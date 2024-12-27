@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace Hotel_Backend_API.Controllers
 {
@@ -87,7 +88,68 @@ namespace Hotel_Backend_API.Controllers
 
         }
 
+
+        [HttpPost("AddProfileImg")]
+        public async Task<IActionResult> AddProfileImg([FromForm] IFormFile img)
+        {
+            try
+            {
+                if (img == null || img.Length == 0)
+                {
+                    return Ok();
+                }
+                if (!img.ContentType.Contains("image"))
+                {
+                    return BadRequest("Invalid image format.");
+                }
+                var userClaims = User.Claims;
+                var userIdClaim = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+                if (userIdClaim == null)
+                {
+                    return Unauthorized("User ID not found in token.");
+                }
+
+                var user = await userManager.FindByIdAsync(userIdClaim);
+                if (user == null)
+                {
+                    return NotFound("User not found.");
+                }
+                var username = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+                var email = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+
+                string rootFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "images\\profiles");
+                Directory.CreateDirectory(rootFolderPath);
+
+                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(img.FileName);
+                string filePath = Path.Combine(rootFolderPath, fileName);
+               
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await img.CopyToAsync(stream);
+                }
+                
+                user.imgUser = filePath;
+                var result = await userManager.UpdateAsync(user);
+
+                var serach = await dbContext.Guests
+                .FirstOrDefaultAsync(b => b.Name == username);
+
+                if (!result.Succeeded)
+                {
+                    return StatusCode(500, "An error occurred while adding the profile image.");
+                }
+
+                var guest = await dbContext.Guests.FirstOrDefaultAsync(b => b.Email == email);
+                guest.imgUser = filePath;
+                await dbContext.SaveChangesAsync();
+
+                return Ok(new { Message = "Image uploaded successfully.", ImagePath = user.imgUser });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
+
     }
-
-
 }

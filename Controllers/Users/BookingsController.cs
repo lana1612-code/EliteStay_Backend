@@ -118,6 +118,9 @@ namespace Hotel_Backend_API.Controllers.Users
                 }
 
                 string userId = userIdClaim;
+
+                var user = await userManager.FindByIdAsync(userIdClaim);
+
                 var username = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
                 var email = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
                 var phone = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.MobilePhone)?.Value;
@@ -131,7 +134,8 @@ namespace Hotel_Backend_API.Controllers.Users
                     {
                         Name = email.Split("@")[0] ?? "Unknown",
                         Email = email ?? "Unknown",
-                        Phone = phone ?? "Unknown"
+                        Phone = phone ?? "Unknown",
+                        imgUser = user.imgUser ?? null
                     };
                     await dbContext.Guests.AddAsync(serach);
                     await dbContext.SaveChangesAsync();
