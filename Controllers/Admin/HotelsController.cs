@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
 
 namespace Hotel_Backend_API.Controllers
 {
@@ -309,5 +310,273 @@ namespace Hotel_Backend_API.Controllers
             }
         }
 
+        /*******************/
+        [HttpPost("import")]
+        public async Task<IActionResult> ImportHotels(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return BadRequest("File is empty.");
+
+            try
+            {
+                using (var stream = new MemoryStream())
+                {
+                    await file.CopyToAsync(stream);
+                    using (var package = new ExcelPackage(stream))
+                    {
+                        var worksheet = package.Workbook.Worksheets[0];
+                        if (worksheet == null)
+                            return BadRequest("No worksheet found in the Excel file.");
+
+                        for (int row = 2; row <= worksheet.Dimension.End.Row; row++)
+                        {
+                            var hotel = new Hotel
+                            {
+                                Name = worksheet.Cells[row, 1].Text,
+                                Address = worksheet.Cells[row, 2].Text,
+                                Stars = int.Parse(worksheet.Cells[row, 3].Text),
+                                profileIMG = worksheet.Cells[row, 4].Text,
+                                Tags = worksheet.Cells[row, 5].Text,
+                                Phone = worksheet.Cells[row, 6].Text,
+                                Email = worksheet.Cells[row, 7].Text,
+                            };
+
+                            dbContext.Hotels.Add(hotel);
+                        }
+
+                        await dbContext.SaveChangesAsync();
+                    }
+                }
+
+                return Ok("Hotels have been successfully imported.");
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, $"An error occurred: {e.Message}");
+            }
+        }
+
+        /*******************/
+        [HttpPost("importRooms")]
+        public async Task<IActionResult> ImportRooms(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return BadRequest("File is empty.");
+
+            try
+            {
+                using (var stream = new MemoryStream())
+                {
+                    await file.CopyToAsync(stream);
+                    using (var package = new ExcelPackage(stream))
+                    {
+                        var worksheet = package.Workbook.Worksheets[0];
+                        if (worksheet == null)
+                            return BadRequest("No worksheet found in the Excel file.");
+
+                        for (int row = 2; row <= worksheet.Dimension.End.Row; row++)
+                        {
+                            var room = new Room
+                            {
+                                HotelId = int.Parse( worksheet.Cells[row, 1].Text),
+                                RoomTypeId = int.Parse(worksheet.Cells[row, 2].Text),
+                                RoomNumber = worksheet.Cells[row, 3].Text,
+                                Status = worksheet.Cells[row, 4].Text,
+                            };
+
+                            dbContext.Rooms.Add(room);
+                        }
+
+                        await dbContext.SaveChangesAsync();
+                    }
+                }
+
+                return Ok("Rooms have been successfully imported.");
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, $"An error occurred: {e.Message}");
+            }
+        }
+
+        /*******************/
+        [HttpPost("importRoomTypes")]
+        public async Task<IActionResult> ImportRoomTypes(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return BadRequest("File is empty.");
+
+            try
+            {
+                using (var stream = new MemoryStream())
+                {
+                    await file.CopyToAsync(stream);
+                    using (var package = new ExcelPackage(stream))
+                    {
+                        var worksheet = package.Workbook.Worksheets[0];
+                        if (worksheet == null)
+                            return BadRequest("No worksheet found in the Excel file.");
+
+                        for (int row = 2; row <= worksheet.Dimension.End.Row; row++)
+                        {
+                            var room = new RoomType
+                            {
+                                Name = worksheet.Cells[row, 1].Text,
+                                PricePerNight = decimal.Parse(worksheet.Cells[row, 2].Text),
+                                Capacity = int.Parse(worksheet.Cells[row, 3].Text),
+                                Description = worksheet.Cells[row, 4].Text,
+                                ImageURL = worksheet.Cells[row, 5].Text,
+                            };
+
+                            dbContext.RoomTypes.Add(room);
+                        }
+
+                        await dbContext.SaveChangesAsync();
+                    }
+                }
+
+                return Ok("Room Types have been successfully imported.");
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, $"An error occurred: {e.Message}");
+            }
+        }
+
+        /*******************/
+        [HttpPost("importComplaint")]
+        public async Task<IActionResult> ImportComplaint(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return BadRequest("File is empty.");
+
+            try
+            {
+                using (var stream = new MemoryStream())
+                {
+                    await file.CopyToAsync(stream);
+                    using (var package = new ExcelPackage(stream))
+                    {
+                        var worksheet = package.Workbook.Worksheets[0];
+                        if (worksheet == null)
+                            return BadRequest("No worksheet found in the Excel file.");
+
+                        for (int row = 2; row <= worksheet.Dimension.End.Row; row++)
+                        {
+                            var room = new Complaint
+                            {
+                                UserId = worksheet.Cells[row, 1].Text,
+                                HotelId = int.Parse(worksheet.Cells[row, 2].Text),
+                                Content = worksheet.Cells[row, 3].Text,
+                                CreatedAt =DateTime.Parse( worksheet.Cells[row, 4].Text),
+                            };
+
+                            dbContext.Complaints.Add(room);
+                        }
+
+                        await dbContext.SaveChangesAsync();
+                    }
+                }
+
+                return Ok("Complaints have been successfully imported.");
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, $"An error occurred: {e.Message}");
+            }
+        }
+
+        /*******************/
+        [HttpPost("importComment")]
+        public async Task<IActionResult> ImportComment(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return BadRequest("File is empty.");
+
+            try
+            {
+                using (var stream = new MemoryStream())
+                {
+                    await file.CopyToAsync(stream);
+                    using (var package = new ExcelPackage(stream))
+                    {
+                        var worksheet = package.Workbook.Worksheets[0];
+                        if (worksheet == null)
+                            return BadRequest("No worksheet found in the Excel file.");
+
+                        for (int row = 2; row <= worksheet.Dimension.End.Row; row++)
+                        {
+                            var room = new Comment
+                            {
+                                UserId = worksheet.Cells[row, 1].Text,
+                                HotelId = int.Parse(worksheet.Cells[row, 2].Text),
+                                Content = worksheet.Cells[row, 3].Text,
+                                CreatedAt = DateTime.Parse(worksheet.Cells[row, 4].Text),
+                            };
+
+                            dbContext.Comments.Add(room);
+                        }
+
+                        await dbContext.SaveChangesAsync();
+                    }
+                }
+
+                return Ok("Comments have been successfully imported.");
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, $"An error occurred: {e.Message}");
+            }
+        }
+
+        /*******************/
+        [HttpPost("importRating")]
+        public async Task<IActionResult> ImportRating(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return BadRequest("File is empty.");
+
+            try
+            {
+                using (var stream = new MemoryStream())
+                {
+                    await file.CopyToAsync(stream);
+                    using (var package = new ExcelPackage(stream))
+                    {
+                        var worksheet = package.Workbook.Worksheets[0];
+                        if (worksheet == null)
+                            return BadRequest("No worksheet found in the Excel file.");
+
+                        for (int row = 2; row <= worksheet.Dimension.End.Row; row++)
+                        {
+                            var room = new Rating
+                            {
+                                UserId = worksheet.Cells[row, 1].Text,
+                                HotelId = int.Parse(worksheet.Cells[row, 2].Text),
+                                RatingValue = double.Parse( worksheet.Cells[row, 3].Text),
+                                RatedAt = DateTime.Parse(worksheet.Cells[row, 4].Text),
+                            };
+
+                            dbContext.Ratings.Add(room);
+                        }
+
+                        await dbContext.SaveChangesAsync();
+                    }
+                }
+
+                return Ok("Ratings have been successfully imported.");
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, $"An error occurred: {e.Message}");
+            }
+        }
+
+      // add data from api
+      /* Guest
+       * AdminHotel
+       * Payment
+       * Booking
+       */
     }
 }
