@@ -9,19 +9,19 @@ using System.Security.Claims;
 
 namespace Hotel_Backend_API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("Admin/[controller]")]
     [ApiController]
     [Authorize]
-    public class NotificationsController : ControllerBase
+    public class AdminNotificationsController : ControllerBase
     {
         private readonly NotificationService _notificationService;
 
-        public NotificationsController(NotificationService notificationService)
+        public AdminNotificationsController(NotificationService notificationService)
         {
             _notificationService = notificationService;
         }
        
-        [HttpGet("user")]
+        [HttpGet()]
         public async Task<IActionResult> GetUserNotifications()
         {
             var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
@@ -35,7 +35,7 @@ namespace Hotel_Backend_API.Controllers
 
             if (!notifications.Any())
             {
-                return NotFound("No Notification found");
+                return Ok();
             }
 
             var notificationDTOs = new List<NotificationDTO>();

@@ -3,12 +3,21 @@
   "WorkspaceRootPath": "C:\\Users\\Admin\\OneDrive\\CE-University X_X\\First Semester 2024\\Graduation Project (1)\\Work\\Hotel_Backend_API\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|ViewDataWindow_MSSQL__/./Hotel_API_DB/True/SqlTable/dbo.Hotels.sql||{0058A1F7-65F3-4DB9-B3D0-CA7E64DD73CD}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{2BA81B52-541C-4EEA-9973-97E942127E0B}|Hotel_Backend_API.csproj|c:\\users\\admin\\onedrive\\ce-university x_x\\first semester 2024\\graduation project (1)\\work\\hotel_backend_api\\controllers\\admin\\hotelscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{2BA81B52-541C-4EEA-9973-97E942127E0B}|Hotel_Backend_API.csproj|solutionrelative:controllers\\admin\\hotelscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2BA81B52-541C-4EEA-9973-97E942127E0B}|Hotel_Backend_API.csproj|c:\\users\\admin\\onedrive\\ce-university x_x\\first semester 2024\\graduation project (1)\\work\\hotel_backend_api\\controllers\\adminhotel\\adminhcomplaintscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2BA81B52-541C-4EEA-9973-97E942127E0B}|Hotel_Backend_API.csproj|solutionrelative:controllers\\adminhotel\\adminhcomplaintscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|ViewDataWindow_MSSQL__/./Hotel_API_DB/True/SqlTable/dbo.Rooms.sql||{0058A1F7-65F3-4DB9-B3D0-CA7E64DD73CD}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|ViewDataWindow_MSSQL__/./Hotel_API_DB/True/SqlTable/dbo.RoomTypes.sql||{0058A1F7-65F3-4DB9-B3D0-CA7E64DD73CD}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2BA81B52-541C-4EEA-9973-97E942127E0B}|Hotel_Backend_API.csproj|c:\\users\\admin\\onedrive\\ce-university x_x\\first semester 2024\\graduation project (1)\\work\\hotel_backend_api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{2BA81B52-541C-4EEA-9973-97E942127E0B}|Hotel_Backend_API.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,7 +27,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 191,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -26,28 +35,58 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
+              "Title": "dbo.RoomTypes [Data]",
+              "DocumentMoniker": "ViewDataWindow_MSSQL__/./Hotel_API_DB/True/SqlTable/dbo.RoomTypes.sql",
+              "ToolTip": "dbo.RoomTypes [Data]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
+              "WhenOpened": "2025-01-01T18:01:58.128Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "dbo.Rooms [Data]",
+              "DocumentMoniker": "ViewDataWindow_MSSQL__/./Hotel_API_DB/True/SqlTable/dbo.Rooms.sql",
+              "ToolTip": "dbo.Rooms [Data]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
+              "WhenOpened": "2025-01-01T18:01:51.419Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\CE-University X_X\\First Semester 2024\\Graduation Project (1)\\Work\\Hotel_Backend_API\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\CE-University X_X\\First Semester 2024\\Graduation Project (1)\\Work\\Hotel_Backend_API\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAnAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-01-01T16:52:35.085Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "HotelsController.cs",
               "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\CE-University X_X\\First Semester 2024\\Graduation Project (1)\\Work\\Hotel_Backend_API\\Controllers\\Admin\\HotelsController.cs",
               "RelativeDocumentMoniker": "Controllers\\Admin\\HotelsController.cs",
               "ToolTip": "C:\\Users\\Admin\\OneDrive\\CE-University X_X\\First Semester 2024\\Graduation Project (1)\\Work\\Hotel_Backend_API\\Controllers\\Admin\\HotelsController.cs",
               "RelativeToolTip": "Controllers\\Admin\\HotelsController.cs",
-              "ViewState": "AQIAAAgAAAAAAAAAAAAuwEoAAAAZAAAA",
+              "ViewState": "AQIAACQBAAAAAAAAAAA3wJMBAABIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-28T09:49:05.201Z",
+              "WhenOpened": "2025-01-01T16:08:24.135Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "AdminHComplaintsController.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\CE-University X_X\\First Semester 2024\\Graduation Project (1)\\Work\\Hotel_Backend_API\\Controllers\\AdminHotel\\AdminHComplaintsController.cs",
-              "RelativeDocumentMoniker": "Controllers\\AdminHotel\\AdminHComplaintsController.cs",
-              "ToolTip": "C:\\Users\\Admin\\OneDrive\\CE-University X_X\\First Semester 2024\\Graduation Project (1)\\Work\\Hotel_Backend_API\\Controllers\\AdminHotel\\AdminHComplaintsController.cs",
-              "RelativeToolTip": "Controllers\\AdminHotel\\AdminHComplaintsController.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABsAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-27T19:38:40.616Z"
+              "DocumentIndex": 0,
+              "Title": "dbo.Hotels [Data]",
+              "DocumentMoniker": "ViewDataWindow_MSSQL__/./Hotel_API_DB/True/SqlTable/dbo.Hotels.sql",
+              "ToolTip": "dbo.Hotels [Data]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
+              "WhenOpened": "2025-01-01T15:58:13.469Z",
+              "EditorCaption": ""
             }
           ]
         },
