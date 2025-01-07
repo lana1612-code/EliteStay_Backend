@@ -38,10 +38,10 @@ namespace Hotel_Backend_API.Controllers.Users
                                        .Include(r => r.RoomType)
                                        .Skip((pageNumber - 1) * pageSize)
                                        .Take(pageSize)
-                                       .Select(r => new RoomDTO
+                                       .Select(r => new RoomDTOUser
                                        {
                                            Id = r.Id,
-                                           NameHotel = r.Hotel.Name,
+                                           IdHotel = r.Hotel.Id,
                                            NameRoomType = r.RoomType.Name,
                                            RoomNumber = r.RoomNumber,
                                            Status = r.Status,
@@ -78,10 +78,10 @@ namespace Hotel_Backend_API.Controllers.Users
                                        .Where(r => r.Status == "available")
                                        .Skip((pageNumber - 1) * pageSize)
                                        .Take(pageSize)
-                                       .Select(r => new RoomDTO
+                                       .Select(r => new RoomDTOUser
                                        {
                                            Id = r.Id,
-                                           NameHotel = r.Hotel.Name,
+                                           IdHotel = r.Hotel.Id,
                                            NameRoomType = r.RoomType.Name,
                                            RoomNumber = r.RoomNumber,
                                            Status = r.Status,
@@ -120,10 +120,10 @@ namespace Hotel_Backend_API.Controllers.Users
                     .Where(r => r.RoomType.Capacity == capacity)
                     .Skip((pageNumber - 1) * pageSize)
                     .Take(pageSize)
-                    .Select(r => new RoomDTO
+                    .Select(r => new RoomDTOUser
                     {
                         Id = r.Id,
-                        NameHotel = r.Hotel.Name,
+                        IdHotel = r.Hotel.Id,
                         NameRoomType = r.RoomType.Name,
                         RoomNumber = r.RoomNumber,
                         Status = r.Status.ToString(),
@@ -177,10 +177,10 @@ namespace Hotel_Backend_API.Controllers.Users
                     .Where(r => recommendedRoomTypeIds.Contains(r.RoomTypeId))
                     .Skip((pageNumber - 1) * pageSize)
                     .Take(pageSize)
-                    .Select(r => new RoomDTO
+                    .Select(r => new RoomDTOUser
                     {
                         Id = r.Id,
-                        NameHotel = r.Hotel.Name,
+                        IdHotel = r.Hotel.Id,
                         NameRoomType = r.RoomType.Name,
                         RoomNumber = r.RoomNumber,
                         Status = r.Status,
@@ -260,10 +260,10 @@ namespace Hotel_Backend_API.Controllers.Users
                 .Where(r => recommendedRoomTypeIds.Contains(r.RoomTypeId))
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-                .Select(r => new RoomDTO
+                .Select(r => new RoomDTOUser
                 {
                     Id = r.Id,
-                    NameHotel = r.Hotel.Name,
+                    IdHotel = r.Hotel.Id,
                     NameRoomType = r.RoomType.Name,
                     RoomNumber = r.RoomNumber,
                     Status = r.Status,

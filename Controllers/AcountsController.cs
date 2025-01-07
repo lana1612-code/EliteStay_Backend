@@ -86,6 +86,7 @@ namespace Hotel_Backend_API.Controllers
                         Email = user.Email,
                         Phone = user.PhoneNumber,
                         Role = distinctRoles,
+                        imageProfile = user.imgUser,
                         HotelId = adminHotel.HotelId,
                         Token = await authService.CreateTokenAsync(user, userManager)
 
@@ -104,6 +105,7 @@ namespace Hotel_Backend_API.Controllers
                     Email = user.Email,
                     Phone = user.PhoneNumber,
                     Role = distinctRoles,
+                    imageProfile = user.imgUser,
                     Token = await authService.CreateTokenAsync(user, userManager)
 
                 }

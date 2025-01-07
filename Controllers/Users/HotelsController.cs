@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
+using static OfficeOpenXml.ExcelErrorValue;
 
 namespace Hotel_Backend_API.Controllers.Users
 {
@@ -148,6 +149,23 @@ namespace Hotel_Backend_API.Controllers.Users
             {
                 return StatusCode(500, "An error occurred while retrieving hotels by address.");
             }
+        }
+
+        [HttpGet("AllTage")]
+        public async Task<IActionResult> GetAllTage()
+        {
+            List<string> tags = new List<string>();
+            var hotels = await dbContext.Hotels.Select(h=> h.Tags).ToListAsync();
+            foreach (var hotel in hotels)
+            {
+                var s = hotel.Split(',');
+                foreach (var word in s)
+                {
+                    tags.Add(word.Trim());
+                }
+            }
+
+            return Ok(tags.Distinct());
         }
 
         [HttpGet("recommendationUsingTags")]
