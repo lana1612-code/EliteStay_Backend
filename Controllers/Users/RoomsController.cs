@@ -153,8 +153,50 @@ namespace Hotel_Backend_API.Controllers.Users
                 return StatusCode(500, "An error occurred while retrieving rooms by capacity.");
             }
         }
-       
-        
+
+
+        [HttpGet("InHotel/{hotelId}")]
+        public async Task<IActionResult> GetAllRoomsInHotel(int hotelId, int pageNumber = 1, int pageSize = 10)
+        {
+            var totalRooms = await dbContext.Rooms
+                                             .Where(r => r.HotelId == hotelId)
+                                             .CountAsync();
+
+            var rooms = await dbContext.Rooms
+                                       .Include(r => r.Hotel)
+                                       .Include(r => r.RoomType)
+                                       .Where(r => r.HotelId == hotelId)
+                                       .Skip((pageNumber - 1) * pageSize)
+                                       .Take(pageSize)
+                                       .Select(r => new RoomDTOUser
+                                       {
+                                           Id = r.Id,
+                                           IdHotel = r.Hotel.Id,
+                                           NameRoomType = r.RoomType.Name,
+                                           RoomNumber = r.RoomNumber,
+                                           Status = r.Status,
+                                           Description = r.RoomType.Description,
+                                           Capacity = r.RoomType.Capacity,
+                                           ImageURL = r.RoomType.ImageURL
+                                       })
+                                       .ToListAsync();
+
+            if (!rooms.Any())
+                return BadRequest("No rooms found for the specified hotel.");
+
+            var response = new
+            {
+                TotalCount = totalRooms,
+                PageSize = pageSize,
+                CurrentPage = pageNumber,
+                TotalPages = (int)Math.Ceiling(totalRooms / (double)pageSize),
+                Data = rooms
+            };
+
+            return Ok(response);
+        }
+
+
         [HttpGet("recommendation/Description")]
         public async Task<IActionResult> GetRecommendations([FromQuery] string descriptionSearchString,
                                              [FromQuery] int pageNumber = 1,
