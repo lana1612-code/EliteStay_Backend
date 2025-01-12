@@ -262,13 +262,13 @@ namespace Hotel_Backend_API.Controllers
                     var notificationMessageGuest = $"Your booking in room {room.RoomNumber} ends today.";
                     await notificationService.CreateNotificationAsync(userGuest.Id, notificationMessageGuest);
 
-                    dbContext.Bookings.Remove(booking);
+                   
                 }
             }
 
             await dbContext.SaveChangesAsync();
 
-            return Ok("Room statuses updated and notifications sent.");
+            return Ok("Room statuses updated !!!");
 
         }
     }

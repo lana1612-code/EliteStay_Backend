@@ -228,17 +228,11 @@ namespace Hotel_Backend_API.Controllers
 
             string userId = userIdClaim;
             string username = usernameClaim;
-            var adminHotelUser = await dbContext.AdminHotels
-                    .FirstOrDefaultAsync(m => m.userName.ToLower() == username.ToLower());
-
-            if (adminHotelUser == null)
-            {
-                return Unauthorized("Admin hotel user not found or does not have permissions.");
-            }
+          
 
             var now = DateTime.UtcNow;
             var endedBookings = await dbContext.Bookings
-                .Where(b => b.CheckoutDate <= now && b.Room.Status == "Occupied" && b.Room.Hotel.Id == adminHotelUser.HotelId)
+                .Where(b => b.CheckoutDate <= now && b.Room.Status == "Occupied")
                 .ToListAsync();
 
 
@@ -267,13 +261,12 @@ namespace Hotel_Backend_API.Controllers
                     var notificationMessageGuest = $"Your booking in room {room.RoomNumber} ends today.";
                     await notificationService.CreateNotificationAsync(userGuest.Id, notificationMessageGuest);
 
-                    dbContext.Bookings.Remove(booking);
                 }
             }
 
             await dbContext.SaveChangesAsync();
 
-            return Ok("Room statuses updated and notifications sent.");
+            return Ok("Room statuses updated !!!");
 
         }
     }

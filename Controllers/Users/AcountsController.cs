@@ -6,7 +6,16 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
+using OfficeOpenXml;
+using System.Diagnostics;
+using System.Reflection.Metadata;
+using System;
 using System.Security.Claims;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Text.RegularExpressions;
+using Microsoft.Office.Interop.Excel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Hotel_Backend_API.Controllers
 {
@@ -168,9 +177,11 @@ namespace Hotel_Backend_API.Controllers
             {
                 return NotFound("User not found.");
             }
-
             return Ok(user.imgUser);
         }
+
+
+
 
     }
 }

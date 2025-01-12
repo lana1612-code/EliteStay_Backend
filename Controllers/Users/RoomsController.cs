@@ -107,6 +107,44 @@ namespace Hotel_Backend_API.Controllers.Users
             return Ok(response);
         }
 
+        [HttpGet("GetAll_Occupied")]
+        public async Task<IActionResult> GetAllOccupiedRooms(int pageNumber = 1, int pageSize = 10)
+        {
+            var totalRooms = await dbContext.Rooms
+                                             .Where(r => r.Status == "Occupied")
+                                             .CountAsync();
+
+            var rooms = await dbContext.Rooms
+                                       .Include(r => r.Hotel)
+                                       .Include(r => r.RoomType)
+                                       .Where(r => r.Status == "Occupied")
+                                       .Skip((pageNumber - 1) * pageSize)
+                                       .Take(pageSize)
+                                       .Select(r => new RoomDTOUser
+                                       {
+                                           Id = r.Id,
+                                           IdHotel = r.Hotel.Id,
+                                           NameRoomType = r.RoomType.Name,
+                                           RoomNumber = r.RoomNumber,
+                                           Status = r.Status,
+                                           Description = r.RoomType.Description,
+                                           Capacity = r.RoomType.Capacity,
+                                           ImageURL = r.RoomType.ImageURL
+                                       })
+                                       .ToListAsync();
+
+            var response = new
+            {
+                TotalCount = totalRooms,
+                PageSize = pageSize,
+                CurrentPage = pageNumber,
+                TotalPages = (int)Math.Ceiling(totalRooms / (double)pageSize),
+                Data = rooms
+            };
+
+            return Ok(response);
+        }
+
 
         [HttpGet("ByCapacity")]
         public async Task<IActionResult> GetRoomsByCapacity(int capacity, int pageNumber = 1, int pageSize = 10)

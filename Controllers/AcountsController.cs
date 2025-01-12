@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Office.Interop.Excel;
+using OfficeOpenXml;
+using System;
 
 namespace Hotel_Backend_API.Controllers
 {
@@ -172,6 +175,32 @@ namespace Hotel_Backend_API.Controllers
         }
 
 
+        [HttpGet]
+        public async Task<IActionResult> getUsers()
+        {
+            var allUsers = await dbContext.Users.ToListAsync();
+            var result = new List<UserDto>();
+
+            foreach (var user in allUsers)
+            {
+                var roles = await userManager.GetRolesAsync(user);
+                if (roles.Contains("Normal"))
+                {
+                    result.Add(new UserDto
+                    {
+                        Username = user.UserName,
+                        Email = user.Email,
+                        Phone = user.PhoneNumber,
+                        ImageProfile = user.imgUser
+                    });
+                }
+            }
+            return Ok(new
+            {
+                size = result.Count,
+                Users = result
+            });
+        }
     }
 
 

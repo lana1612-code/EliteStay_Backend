@@ -395,6 +395,10 @@ namespace Hotel_Backend_API.Controllers
             }
             catch (Exception e)
             {
+                if (e.InnerException != null)
+                {
+                    return StatusCode(500, $"An error occurred: {e.Message}, Inner Exception: {e.InnerException.Message}");
+                }
                 return StatusCode(500, $"An error occurred: {e.Message}");
             }
         }
@@ -571,6 +575,9 @@ namespace Hotel_Backend_API.Controllers
                 return StatusCode(500, $"An error occurred: {e.Message}");
             }
         }
+
+
+
 
       // add data from api
       /* Guest
