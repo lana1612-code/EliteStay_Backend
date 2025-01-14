@@ -19,7 +19,7 @@ namespace Hotel_Backend_API.Controllers
         }
 
 
-        [HttpGet("{hotelId}")]
+        [HttpGet("GetAll/{hotelId}")]
         public async Task<IActionResult> GetAllGuests(int hotelId, int pageNumber = 1, int pageSize = 10)
         {
             var totalGuests = await dbContext.Bookings
