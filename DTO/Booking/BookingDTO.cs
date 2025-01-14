@@ -6,6 +6,8 @@
         public string GuestName { get; set; }
         public string GuestImg { get; set; }
         public string hotelName { get; set; }
+        public string RoomName { get; set; }
+        public string? ImageURL { get; set; }
         public string RoomNumber { get; set; }
         public string CheckinDate { get; set; }
         public string CheckoutDate { get; set; }
