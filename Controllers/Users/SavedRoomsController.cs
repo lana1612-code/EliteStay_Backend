@@ -59,20 +59,23 @@ namespace Hotel_Backend_API.Controllers.Users
 
             string userId = userIdClaim;
             var savedRooms = await dbContext.SavedRooms
-                .Where(sr => sr.UserId == userId)
-                .Include(sr => sr.Room)
+                 .Where(sr => sr.UserId == userId)
+                 .Include(sr => sr.Room)
                     .ThenInclude(r => r.RoomType)
-                .ToListAsync();
+                 .GroupBy(sr => sr.Room.Id)
+                 .Select(g => g.FirstOrDefault())
+                 .ToListAsync();
 
             var savedRoomDTOs = savedRooms.Select(sr => new
             {
                 sr.Room.Id,
                 sr.Room.RoomNumber,
                 RoomTypeName = sr.Room.RoomType.Name,
+                sr.Room.RoomType.ImageURL,
                 sr.Room.RoomType.Description,
                 sr.Room.RoomType.PricePerNight,
                 sr.SavedAt
-            });
+            }).ToList();
 
             return Ok(savedRoomDTOs);
         }
