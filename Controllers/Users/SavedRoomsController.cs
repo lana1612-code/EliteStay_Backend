@@ -73,6 +73,7 @@ namespace Hotel_Backend_API.Controllers.Users
                 RoomTypeName = sr.Room.RoomType.Name,
                 sr.Room.RoomType.ImageURL,
                 sr.Room.RoomType.Description,
+                sr.Room.Status,
                 sr.Room.RoomType.PricePerNight,
                 sr.SavedAt
             }).ToList();

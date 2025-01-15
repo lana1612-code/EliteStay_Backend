@@ -132,13 +132,15 @@ namespace Hotel_Backend_API.Controllers
 
                 string fileName = Guid.NewGuid().ToString() + Path.GetExtension(img.FileName);
                 string filePath = Path.Combine(rootFolderPath, fileName);
-               
+
+
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await img.CopyToAsync(stream);
                 }
-                
-                user.imgUser = filePath;
+                string relativePath = filePath.Substring(filePath.IndexOf("images"));
+
+                user.imgUser = relativePath;
                 var result = await userManager.UpdateAsync(user);
 
                 var serach = await dbContext.Guests
