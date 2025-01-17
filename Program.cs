@@ -6,6 +6,7 @@ using Hotel_Backend_API.Models;
 using Hotel_Backend_API.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -79,6 +80,12 @@ namespace Hotel_Backend_API
 
             var app = builder.Build();
 
+            //alow to open image
+            app.UseStaticFiles(
+                new StaticFileOptions {
+                    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory() , "images")),
+                    RequestPath = "/images"
+                }); ;
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

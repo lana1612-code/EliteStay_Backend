@@ -234,7 +234,7 @@ namespace Hotel_Backend_API.Controllers
                 var response = new
                 {
                     Message = "Add Room Success",
-                    Data = newRoomDto
+                    data = newRoomDto
                 };
 
                 return CreatedAtAction(nameof(GetRoomById), new { id = newRoom.Id }, response);

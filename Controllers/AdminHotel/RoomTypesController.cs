@@ -222,7 +222,7 @@ namespace Hotel_Backend_API.Controllers
                 var response = new
                 {
                     Message = "Add Room Type Success",
-                    Data = roomTypeDto
+                    data = roomTypeDto
                 };
 
                 return CreatedAtAction(nameof(GetAllRoomTypes), new { id = newRoomType.Id }, response);
