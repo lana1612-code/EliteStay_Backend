@@ -231,10 +231,19 @@ namespace Hotel_Backend_API.Controllers
                 dbContext.Rooms.Add(newRoom);
                 await dbContext.SaveChangesAsync();
 
+                var result = new 
+                {
+                    Id = newRoom.Id,
+                    HotelId = newRoomDto.HotelId,
+                    RoomTypeId = newRoomDto.RoomTypeId,
+                    RoomNumber = newRoomDto.RoomNumber,
+                    Status = "Available"
+                };
+
                 var response = new
                 {
                     Message = "Add Room Success",
-                    data = newRoomDto
+                    data = result
                 };
 
                 return CreatedAtAction(nameof(GetRoomById), new { id = newRoom.Id }, response);
