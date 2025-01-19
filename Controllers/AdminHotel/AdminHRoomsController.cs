@@ -273,10 +273,17 @@ namespace Hotel_Backend_API.Controllers
 
                 dbContext.Rooms.Update(room);
                 await dbContext.SaveChangesAsync();
+
+                var res = new
+                {
+                    Id = room.Id,
+                    RoomNumber = updateRoomDto.RoomNumber,
+                    Status = updateRoomDto.Status,
+                };
                 var response = new
                 {
                     Message = "Update Room Success",
-                    Data = updateRoomDto
+                    Data = res
                 };
                 return Ok(response);
             }

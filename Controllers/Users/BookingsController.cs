@@ -61,11 +61,12 @@ namespace Hotel_Backend_API.Controllers.Users
                     .Include(b => b.Room)
                     .ThenInclude(r => r.RoomType)
                     .Where(b => b.GuestId == guest.Id)
+                    .OrderByDescending(b => b.CheckoutDate)
                     .Skip((page - 1) * pageSize)
                     .Take(pageSize)
                     .ToListAsync();
 
-                var bookingDtos = bookings.Select(b => new BookingDTO
+                var bookingDtos = bookings.Select(b => new UserBookingDTO
                 {
                     Id = b.Id,
                     GuestName = b.Guest.Name,
@@ -75,9 +76,23 @@ namespace Hotel_Backend_API.Controllers.Users
                     ImageURL = b.Room.RoomType.ImageURL,
                     CheckinDate = b.CheckinDate.ToString("yyyy-MM-dd"),
                     CheckoutDate = b.CheckoutDate.ToString("yyyy-MM-dd"),
-                    TotalPrice = b.TotalPrice
+                    TotalPrice = b.TotalPrice,
+                    IsEnd = false
                 }).ToList();
-
+                
+                foreach(var booking in bookingDtos) {
+                    DateTime CheckoutDate = DateTime.Parse(booking.CheckoutDate);
+                    DateTime current = DateTime.Now.Date;
+                   if (CheckoutDate < current)
+                    {
+                        //the booking is end
+                        booking.IsEnd = true;
+                    }
+                    else
+                    {
+                        booking.IsEnd = false;
+                    }
+                }
                 var response = new
                 {
                     TotalCount = totalBookings,
