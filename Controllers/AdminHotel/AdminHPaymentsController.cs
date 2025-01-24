@@ -53,12 +53,14 @@ namespace Hotel_Backend_API.Controllers
             var payments = await dbContext.Payments
                 .Include(p => p.Booking)
                 .ThenInclude(b => b.Room)
+                .ThenInclude(b => b.Hotel)
                 .Where(p => p.Booking.Room.HotelId == hotelId)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .Select(p => new PaymentDTO
                 {Id = p.Id,
                     BookingId = p.BookingId,
+                    hotelName = p.Booking.Room.Hotel.Name,
                     Amount = p.Amount,
                     PaymentDate = p.PaymentDate.ToString("yyyy-MM-dd"),
                     StatusDone = "Yes",

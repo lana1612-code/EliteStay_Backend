@@ -5,7 +5,7 @@
         public decimal CalculateTotalPrice(DateTime checkinDate, DateTime checkoutDate, decimal pricePerNight)
         {
             int numberOfNights = (checkoutDate - checkinDate).Days;
-            decimal totalPrice = numberOfNights * pricePerNight;
+            decimal totalPrice = numberOfNights  * pricePerNight;
 
             return totalPrice;
         }

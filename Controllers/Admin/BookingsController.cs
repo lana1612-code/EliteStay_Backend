@@ -75,6 +75,8 @@ namespace Hotel_Backend_API.Controllers
                     .Include(b => b.Guest)
                     .Include(b => b.Room)
                     .ThenInclude(r => r.Hotel)
+                    .Include(b => b.Room)
+                    .ThenInclude(r => r.RoomType)
                     .Skip((page - 1) * pageSize)
                     .Take(pageSize)
                     .Select(b => new BookingDTO
@@ -82,6 +84,8 @@ namespace Hotel_Backend_API.Controllers
                         Id = b.Id,
                         GuestName = b.Guest.Name,
                         RoomNumber = b.Room.RoomNumber,
+                        ImageURL = b.Room.RoomType.ImageURL,
+                        RoomName =b.Room.RoomType.Name,
                         CheckinDate = b.CheckinDate.ToString("yyyy-MM-dd"),
                         CheckoutDate = b.CheckoutDate.ToString("yyyy-MM-dd"),
                         TotalPrice = b.TotalPrice,

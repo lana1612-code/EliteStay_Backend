@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Admin\\OneDrive\\CE-University X_X\\First Semester 2024\\Graduation Project (1)\\Work\\Hotel_Backend_API\\Hotel_Backend_API.csproj": {}
+    "C:\\Users\\Admin\\OneDrive\\CE-University X_X\\First Semester 2024\\Graduation Project (1)\\Work\\ProjectSoftware2024\\Hotel_Backend_API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Admin\\OneDrive\\CE-University X_X\\First Semester 2024\\Graduation Project (1)\\Work\\Hotel_Backend_API\\Hotel_Backend_API.csproj": {
+    "C:\\Users\\Admin\\OneDrive\\CE-University X_X\\First Semester 2024\\Graduation Project (1)\\Work\\ProjectSoftware2024\\Hotel_Backend_API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Admin\\OneDrive\\CE-University X_X\\First Semester 2024\\Graduation Project (1)\\Work\\Hotel_Backend_API\\Hotel_Backend_API.csproj",
+        "projectUniqueName": "C:\\Users\\Admin\\OneDrive\\CE-University X_X\\First Semester 2024\\Graduation Project (1)\\Work\\ProjectSoftware2024\\Hotel_Backend_API.csproj",
         "projectName": "Hotel_Backend_API",
-        "projectPath": "C:\\Users\\Admin\\OneDrive\\CE-University X_X\\First Semester 2024\\Graduation Project (1)\\Work\\Hotel_Backend_API\\Hotel_Backend_API.csproj",
+        "projectPath": "C:\\Users\\Admin\\OneDrive\\CE-University X_X\\First Semester 2024\\Graduation Project (1)\\Work\\ProjectSoftware2024\\Hotel_Backend_API.csproj",
         "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Admin\\OneDrive\\CE-University X_X\\First Semester 2024\\Graduation Project (1)\\Work\\Hotel_Backend_API\\obj\\",
+        "outputPath": "C:\\Users\\Admin\\OneDrive\\CE-University X_X\\First Semester 2024\\Graduation Project (1)\\Work\\ProjectSoftware2024\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",

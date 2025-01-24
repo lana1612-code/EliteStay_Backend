@@ -76,6 +76,7 @@ namespace Hotel_Backend_API.Controllers
         {
             try
             {
+                var name_hotel = await dbContext.Hotels.FirstOrDefaultAsync(b => b.Id ==hotelId);
                 var roomTypeIds = await dbContext.Rooms
                     .Where(r => r.HotelId == hotelId)
                     .Select(r => r.RoomTypeId)
@@ -93,6 +94,7 @@ namespace Hotel_Backend_API.Controllers
                     {
                         Id = rt.Id,
                         Name = rt.Name,
+                        hotelName = name_hotel.Name,
                         PricePerNight = rt.PricePerNight,
                         Capacity = rt.Capacity,
                         Description = rt.Description,

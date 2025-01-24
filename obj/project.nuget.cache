@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "5nSa3SCEzL9kIZPW3sHgoME02lFGb5KP81Mbxpuiu300NqFErfXuEyGFQiShnmzWNARGmnhkj/lxO0VEK8U5KQ==",
+  "dgSpecHash": "XTJ9DK3e6kf44NgEVAx9pp5t1m/wHV8DPX9xb3yfWqObqtecbXh7VmRQcn21raluiylUu8HvRFfHedye8P1gZA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Admin\\OneDrive\\CE-University X_X\\First Semester 2024\\Graduation Project (1)\\Work\\Hotel_Backend_API\\Hotel_Backend_API.csproj",
+  "projectFilePath": "C:\\Users\\Admin\\OneDrive\\CE-University X_X\\First Semester 2024\\Graduation Project (1)\\Work\\ProjectSoftware2024\\Hotel_Backend_API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",

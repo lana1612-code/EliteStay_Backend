@@ -74,7 +74,9 @@ namespace Hotel_Backend_API.Controllers
                 var bookings = await dbContext.Bookings
                     .Include(b => b.Guest)
                     .Include(b => b.Room)
-                    .Where(b => b.Room.HotelId == hotelId)
+                    .ThenInclude(b=>b.Hotel)
+                    .Include(b => b.Room)
+                    .ThenInclude(r => r.RoomType)
                     .Skip((page - 1) * pageSize)
                     .Take(pageSize)
                     .ToListAsync();
@@ -83,7 +85,10 @@ namespace Hotel_Backend_API.Controllers
                 {
                     Id = b.Id,
                     GuestName = b.Guest.Name,
+                    hotelName =b.Room.Hotel.Name,
+                    RoomName = b.Room.RoomType.Name,
                     RoomNumber = b.Room.RoomNumber,
+                    ImageURL = b.Room.RoomType.ImageURL,
                     CheckinDate = b.CheckinDate.ToString("yyyy-MM-dd"),
                     CheckoutDate = b.CheckoutDate.ToString("yyyy-MM-dd"),
                     TotalPrice = b.TotalPrice

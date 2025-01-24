@@ -51,6 +51,7 @@ namespace Hotel_Backend_API.Controllers
         [HttpGet("GetAll/{hotelId}")]
         public async Task<IActionResult> GetAllRoomsInHotel(int hotelId, int pageNumber = 1, int pageSize = 10)
         {
+            
             var totalRooms = await dbContext.Rooms
                                              .Where(r => r.HotelId == hotelId)
                                              .CountAsync();
