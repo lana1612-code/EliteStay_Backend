@@ -55,8 +55,12 @@ namespace Hotel_Backend_API.Controllers
                 };
                 returnComplainDto.Add(complaindto);
             }
-            
-            return Ok(returnComplainDto);
+            var response = new {
+            data = returnComplainDto
+            };
+
+
+            return Ok(response);
         }
    
     }

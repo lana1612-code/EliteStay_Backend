@@ -43,7 +43,7 @@ namespace Hotel_Backend_API.Controllers
                                              Name = g.Name,
                                              Email = g.Email,
                                              Phone = g.Phone,
-                                             imgUser = g.imgUser
+                                             imgUser = g.imgUser.Substring(g.imgUser.IndexOf("images"))
                                          })
                                          .ToListAsync();
 

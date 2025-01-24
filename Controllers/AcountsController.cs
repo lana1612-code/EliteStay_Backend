@@ -117,7 +117,7 @@ namespace Hotel_Backend_API.Controllers
         }
 
 
-        [HttpPut("AssignRoleToAdminHotel")]
+        [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AssignRole(string username,int HotelID)
         {
@@ -175,7 +175,7 @@ namespace Hotel_Backend_API.Controllers
         }
 
 
-        [HttpGet]
+        [HttpGet()]
         public async Task<IActionResult> getUsers()
         {
             var allUsers = await dbContext.Users.ToListAsync();
@@ -198,9 +198,36 @@ namespace Hotel_Backend_API.Controllers
             return Ok(new
             {
                 size = result.Count,
-                Users = result
+                data = result
             });
         }
+
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> Adminhotel()
+        {
+            var admins = await dbContext.AdminHotels.ToListAsync();
+            var result = new List<object>();
+
+            foreach (var admin in admins)
+            {
+                var hotel = await dbContext.Hotels.FirstOrDefaultAsync(a =>a.Id == admin.HotelId);
+                var admin1 = new {
+                    Username = admin.userName,
+                    HotelId = admin.HotelId,
+                    HotelName = hotel.Name,
+                };
+
+                result.Add(admin1);
+            }
+            
+            return Ok(new
+            {
+                size = result.Count,
+                data = result
+            });
+        }
+
+
     }
 
 
