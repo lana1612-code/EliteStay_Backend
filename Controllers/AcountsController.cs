@@ -175,34 +175,7 @@ namespace Hotel_Backend_API.Controllers
         }
 
 
-        [HttpGet("GetAll/user")]
-        public async Task<IActionResult> getUsers()
-        {
-            var allUsers = await dbContext.Users.ToListAsync();
-            var result = new List<UserDto>();
-
-            foreach (var user in allUsers)
-            {
-                var roles = await userManager.GetRolesAsync(user);
-                if (roles.Contains("Normal"))
-                {
-                    result.Add(new UserDto
-                    {
-                        Username = user.UserName,
-                        Email = user.Email,
-                        Phone = user.PhoneNumber,
-                        ImageProfile = user.imgUser
-                    });
-                }
-            }
-            return Ok(new
-            {
-                size = result.Count,
-                data = result
-            });
-        }
-
-        [HttpGet("GetAll/admin")]
+        [HttpGet("GetAll")]
         public async Task<IActionResult> Adminhotel()
         {
             var admins = await dbContext.AdminHotels.ToListAsync();
@@ -226,8 +199,6 @@ namespace Hotel_Backend_API.Controllers
                 data = result
             });
         }
-
-
     }
 
 
