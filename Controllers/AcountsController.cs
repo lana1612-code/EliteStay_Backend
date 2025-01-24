@@ -175,7 +175,7 @@ namespace Hotel_Backend_API.Controllers
         }
 
 
-        [HttpGet()]
+        [HttpGet("GetAll/user")]
         public async Task<IActionResult> getUsers()
         {
             var allUsers = await dbContext.Users.ToListAsync();
@@ -202,7 +202,7 @@ namespace Hotel_Backend_API.Controllers
             });
         }
 
-        [HttpGet("GetAll")]
+        [HttpGet("GetAll/admin")]
         public async Task<IActionResult> Adminhotel()
         {
             var admins = await dbContext.AdminHotels.ToListAsync();
