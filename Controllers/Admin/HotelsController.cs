@@ -181,7 +181,7 @@ namespace Hotel_Backend_API.Controllers
                 }
                 await dbContext.Hotels.AddAsync(hotel);
                 await dbContext.SaveChangesAsync();
-
+                newhotel.Id = hotel.Id;
                 var response = new
                 {
                     Message = "Add Hotel Success",
