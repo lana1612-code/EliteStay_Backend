@@ -1,5 +1,6 @@
 ﻿using Hotel_Backend_API.Data;
 using Hotel_Backend_API.DTO.Acount;
+using Hotel_Backend_API.DTO.Admin;
 using Hotel_Backend_API.Models;
 using Hotel_Backend_API.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -119,20 +120,20 @@ namespace Hotel_Backend_API.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AssignRole(string username,int HotelID)
+        public async Task<IActionResult> AssignRole([FromBody] request req)
         {
-            var user = await userManager.FindByNameAsync(username);
+            var user = await userManager.FindByNameAsync(req.username);
 
             if (user == null)
             {
                 return NotFound("User not found");
             }
             if (dbContext.AdminHotels.AsEnumerable()
-              .Any(h => h.userName.Equals(username, StringComparison.OrdinalIgnoreCase)))
+              .Any(h => h.userName.Equals(req.username, StringComparison.OrdinalIgnoreCase)))
             {
                 return BadRequest("This userName is already Admin for Hotel.");
             }
-            if (dbContext.AdminHotels.AsEnumerable().Any(h => h.HotelId == HotelID))
+            if (dbContext.AdminHotels.AsEnumerable().Any(h => h.HotelId == req.HotelID))
             {
                 return BadRequest("This Hotel is already has Admin.");
             }
@@ -145,7 +146,7 @@ namespace Hotel_Backend_API.Controllers
             var adminHotel = new AdminHotel
             {
                 userName = user.UserName,
-                HotelId = HotelID
+                HotelId = req.HotelID
             };
             await dbContext.AdminHotels.AddAsync(adminHotel);
             await dbContext.SaveChangesAsync();

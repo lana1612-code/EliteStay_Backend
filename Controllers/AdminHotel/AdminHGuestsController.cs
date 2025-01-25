@@ -39,7 +39,8 @@ namespace Hotel_Backend_API.Controllers
             var guests = await dbContext.Guests
                                          .Where(g => guestIds.Contains(g.Id))
                                          .Select(g => new GuestDTO
-                                         {Id = g.Id,
+                                         {
+                                             Id = g.Id,
                                              Name = g.Name,
                                              Email = g.Email,
                                              Phone = g.Phone,

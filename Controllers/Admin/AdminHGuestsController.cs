@@ -69,6 +69,7 @@ namespace Hotel_Backend_API.Controllers
                                         .Take(pageSize)
                                         .Select(g => new GuestDTO
                                         {
+                                            Id = g.Id,
                                             Name = g.Name,
                                             Email = g.Email,
                                             Phone = g.Phone,
