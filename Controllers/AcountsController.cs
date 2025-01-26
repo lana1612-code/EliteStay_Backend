@@ -150,7 +150,17 @@ namespace Hotel_Backend_API.Controllers
             };
             await dbContext.AdminHotels.AddAsync(adminHotel);
             await dbContext.SaveChangesAsync();
-            return Ok("Role assigned successfully");
+
+            var response = new { 
+            Id = adminHotel.Id,
+            userName = user.UserName,
+            HotelId = req.HotelID
+            };
+
+            return Ok(new
+            {
+                data = response
+            });
         }
 
 

@@ -39,7 +39,8 @@ namespace Hotel_Backend_API.Controllers
             var complaints = await dbContext.Complaints
                   .Where(c => c.HotelId == hotelId)
                   .ToListAsync();
-
+            var hotel = await dbContext.Hotels
+                  .FirstOrDefaultAsync(c => c.Id == hotelId);
             List<ReturnComplainDTO> returnComplainDto = new List<ReturnComplainDTO>();
             foreach(var Complain in complaints)
             {
@@ -49,6 +50,7 @@ namespace Hotel_Backend_API.Controllers
                     Id = Complain.Id,
                     EmailUser = user.Email,
                     NameUser = user.UserName,
+                    hotelName = hotel.Name,
                     imgUser = user.imgUser,
                     Content = Complain.Content,
                     CreatedAt = Complain.CreatedAt,

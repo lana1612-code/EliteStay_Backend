@@ -85,7 +85,8 @@ namespace Hotel_Backend_API.Controllers
                 {
                     Id = b.Id,
                     GuestName = b.Guest.Name,
-                    hotelName =b.Room.Hotel.Name,
+                    GuestImg = b.Guest.imgUser.Substring(b.Guest.imgUser.IndexOf("images")),
+                    hotelName = hotel.Name,
                     RoomName = b.Room.RoomType.Name,
                     RoomNumber = b.Room.RoomNumber,
                     ImageURL = b.Room.RoomType.ImageURL,
