@@ -19,14 +19,17 @@ namespace Hotel_Backend_API.Controllers.Users
         private readonly NotificationService notificationService;
         private readonly UserManager<AppUser> userManager;
         private readonly totalPriceService totalPriceService;
+        private readonly SendEmailService sendEmailService;
 
         public BookingsController(ApplicationDbContext dbContext, NotificationService notificationService,
-                                  UserManager<AppUser> userManager, totalPriceService totalPriceService)
+                                  UserManager<AppUser> userManager, totalPriceService totalPriceService,
+                                  SendEmailService sendEmailService)
         {
             this.dbContext = dbContext;
             this.notificationService = notificationService;
             this.userManager = userManager;
             this.totalPriceService = totalPriceService;
+            this.sendEmailService = sendEmailService;
         }
 
 
@@ -35,6 +38,38 @@ namespace Hotel_Backend_API.Controllers.Users
         {
             try
             {
+                /**
+                var now = DateTime.UtcNow;
+                var endedBookings = await dbContext.Bookings
+                    .Where(b => b.CheckoutDate <= now && b.Room.Status == "Occupied")
+                    .ToListAsync();
+
+
+                foreach (var booking in endedBookings)
+                {
+                    var room = await dbContext.Rooms.FindAsync(booking.RoomId);
+                    if (room != null)
+                    {
+                        var guest = await dbContext.Guests.FindAsync(booking.GuestId);
+                        if (guest == null)
+                        {
+                            return NotFound("Guest not found");
+                        }
+
+                        var userGuest = await userManager.FindByNameAsync(guest.Name);
+                        if (userGuest == null)
+                        {
+                            return NotFound("Guest user not found in the system");
+                        }
+
+                        room.Status = "Available";
+                    }
+                }
+
+                await dbContext.SaveChangesAsync();
+
+                /**/
+
                 var userClaims = User.Claims;
                 var userIdClaim = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
                 if (userIdClaim == null)
@@ -205,6 +240,20 @@ namespace Hotel_Backend_API.Controllers.Users
                 string notificationMessage = $"New booking created for guest {serach.Name} in room {room.RoomNumber}.";
                 await notificationService.CreateNotificationAsync(userId, notificationMessage);
 
+                var receiver = email;
+                var subject = "Your Room Reservation Confirmation";
+                
+                var message = "Hi "+username+ " ," +
+                    "\r\n\r\nWe are excited to inform you that your" +
+                    " room reservation has been successfully confirmed!" +
+                    " We look forward to welcoming you and ensuring you" +
+                    " have a pleasant stay.\r\n\r\nPlease find the details " +
+                    "of your booking attached. If you have any questions or" +
+                    " need further assistance, feel free to reach out to us." +
+                    "\r\n\r\nThank you for choosing" +
+                    " Elite Stay.\r\n\r\nBest regards,";
+                await sendEmailService.SendEmail(receiver, subject, message);
+                
                 var bookingDto = new BookingDTO
                 {
                     GuestName = serach.Name,
